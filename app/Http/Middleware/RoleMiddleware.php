@@ -4,39 +4,27 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\Auth;
+use Symfony\Component\HttpFoundation\Response;
 
 class RoleMiddleware
 {
-    /**
-     * Handle an incoming request.
-     */
     public function handle(
         Request $request,
         Closure $next,
         string $role
     ): Response
     {
-        /*
-        |--------------------------------------------------------------------------
-        | BELUM LOGIN
-        |--------------------------------------------------------------------------
-        */
+        if (!Auth::check()) {
 
-        if(!Auth::check())
-        {
             return redirect('/');
         }
 
-        /*
-        |--------------------------------------------------------------------------
-        | ROLE CHECK
-        |--------------------------------------------------------------------------
-        */
+        if (
+            strtolower(Auth::user()->role)
+            != strtolower($role)
+        ) {
 
-        if(Auth::user()->role != $role)
-        {
             abort(403);
         }
 

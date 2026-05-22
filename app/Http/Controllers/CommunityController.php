@@ -8,6 +8,7 @@ use App\Models\Donation;
 use App\Models\Notification;
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Models\DonationClaim;
 
 class CommunityController extends Controller
 {
@@ -82,8 +83,13 @@ class CommunityController extends Controller
     |--------------------------------------------------------------------------
     */
 
-    public function claimDonation($id)
+    public function claimDonation(Request $request, $id)
     {
+        $request->validate([
+
+            'claim_quantity' => 'required|numeric|min:1'
+        ]);
+
         $donation = Donation::with('supplier')
             ->findOrFail($id);
 
@@ -91,20 +97,131 @@ class CommunityController extends Controller
 
         /*
     |--------------------------------------------------------------------------
-    | STATUS REQUESTED
+    | CHECK REMAINING
     |--------------------------------------------------------------------------
     */
 
-        $donation->update([
+        if (
+            $request->claim_quantity >
+            $donation->remaining_quantity
+        ) {
 
-            'status' => 'requested',
-
-            'community_id' => $community->id
-        ]);
+            return back()->with(
+                'error',
+                'Not enough remaining portions'
+            );
+        }
 
         /*
     |--------------------------------------------------------------------------
-    | NOTIF TO SUPPLIER
+    | TOTAL CLAIMED
+    |--------------------------------------------------------------------------
+    */
+
+        $totalPortions = DonationClaim::where(
+            'community_id',
+            $community->id
+        )
+
+            ->whereIn('status', [
+                'requested',
+                'approved'
+            ])
+
+            ->sum('claimed_quantity');
+
+        /*
+|--------------------------------------------------------------------------
+| LIMIT 30
+|--------------------------------------------------------------------------
+*/
+
+        if (
+            ($totalPortions + $request->claim_quantity) > 30
+        ) {
+
+            return back()->with(
+                'error',
+                'Maximum claim limit is 30 portions'
+            );
+        }
+
+        /*
+|--------------------------------------------------------------------------
+| CHECK DUPLICATE CLAIM
+|--------------------------------------------------------------------------
+*/
+
+        $existingClaim = DonationClaim::where(
+            'donation_id',
+            $donation->id
+        )
+
+            ->where(
+                'community_id',
+                $community->id
+            )
+
+            ->whereIn('status', [
+                'requested',
+                'approved'
+            ])
+
+            ->first();
+
+        if ($existingClaim) {
+
+            return back()->with(
+                'error',
+                'You already claimed this donation'
+            );
+        }
+
+        /*
+|--------------------------------------------------------------------------
+| CREATE CLAIM
+|--------------------------------------------------------------------------
+*/
+
+        DonationClaim::create([
+
+            'donation_id' => $donation->id,
+
+            'community_id' => $community->id,
+
+            'claimed_quantity' => $request->claim_quantity,
+
+            'status' => 'requested'
+
+        ]);
+
+        /*
+|--------------------------------------------------------------------------
+| REDUCE REMAINING
+|--------------------------------------------------------------------------
+*/
+
+        $donation->remaining_quantity -=
+            $request->claim_quantity;
+
+        /*
+|--------------------------------------------------------------------------
+| IF EMPTY
+|--------------------------------------------------------------------------
+*/
+
+        if ($donation->remaining_quantity <= 0) {
+
+            $donation->remaining_quantity = 0;
+
+            $donation->status = 'completed';
+        }
+
+        $donation->save();
+
+        /*
+    |--------------------------------------------------------------------------
+    | NOTIFICATION
     |--------------------------------------------------------------------------
     */
 
@@ -118,7 +235,11 @@ class CommunityController extends Controller
 
             $community->nama_komunitas .
 
-                ' wants to claim "' .
+                ' claimed ' .
+
+                $request->claim_quantity .
+
+                ' portions of "' .
 
                 $donation->food_name .
 
@@ -129,7 +250,10 @@ class CommunityController extends Controller
             'is_read' => 0
         ]);
 
-        return back();
+        return back()->with(
+            'success',
+            'Donation claimed successfully'
+        );
     }
 
     /*
@@ -145,69 +269,40 @@ class CommunityController extends Controller
             'proof_photo' => 'required|image'
         ]);
 
-        $donation = Donation::with([
-            'supplier',
-            'community'
-        ])
-
-            ->findOrFail($id);
+        $claim = DonationClaim::findOrFail($id);
 
         /*
     |--------------------------------------------------------------------------
-    | UPLOAD PROOF PHOTO
+    | UPLOAD PHOTO
     |--------------------------------------------------------------------------
     */
 
-        $proofPhoto = $request
-            ->file('proof_photo')
-            ->store(
-                'proof_photos',
-                'public'
-            );
+        $photoName = time() . '.' .
+            $request->proof_photo->extension();
+
+        $request->proof_photo->move(
+            public_path('completion_photos'),
+            $photoName
+        );
 
         /*
     |--------------------------------------------------------------------------
-    | UPDATE STATUS
+    | UPDATE CLAIM
     |--------------------------------------------------------------------------
     */
 
-        $donation->update([
+        $claim->update([
 
-            'status' => 'completed',
+            'community_proof_photo' =>
+            'completion_photos/' . $photoName,
 
-            'proof_photo' => $proofPhoto
+            'status' => 'completed'
         ]);
 
-        /*
-    |--------------------------------------------------------------------------
-    | NOTIFICATION TO SUPPLIER
-    |--------------------------------------------------------------------------
-    */
-
-        Notification::create([
-
-            'user_id' => $donation->supplier->user_id,
-
-            'title' => 'Donation Delivered',
-
-            'message' =>
-
-            '"' .
-
-                $donation->food_name .
-
-                '" has been successfully received by ' .
-
-                $donation->community->nama_komunitas .
-
-                '.',
-
-            'type' => 'completed',
-
-            'is_read' => 0
-        ]);
-
-        return back();
+        return back()->with(
+            'success',
+            'Donation completed successfully'
+        );
     }
 
     /*
@@ -252,12 +347,15 @@ class CommunityController extends Controller
 
         $community = $user->community;
 
-        $histories = Donation::with([
-            'supplier',
+        $histories = DonationClaim::with([
+            'donation.supplier',
             'community'
         ])
 
-            ->where('community_id', $community->id)
+            ->where(
+                'community_id',
+                $community->id
+            )
 
             ->whereIn('status', [
                 'requested',
@@ -265,7 +363,7 @@ class CommunityController extends Controller
                 'completed'
             ])
 
-            ->orderBy('created_at', 'desc')
+            ->latest()
 
             ->paginate(6);
 

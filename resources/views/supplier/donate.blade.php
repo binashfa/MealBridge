@@ -11,6 +11,12 @@
 
     <script src="https://cdn.tailwindcss.com"></script>
 
+    <!-- LEAFLET CSS -->
+    <link
+        rel="stylesheet"
+        href="https://unpkg.com/leaflet/dist/leaflet.css" />
+
+
     <link
         href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css'
         rel='stylesheet'>
@@ -24,7 +30,7 @@
         @include('supplier.sidebar')
 
         <!-- MAIN -->
-        <main class="flex-1 overflow-hidden px-8 py-5 pt-16">
+        <main class="flex-1 overflow-hidden px-8 py-5 pt-8">
 
             <!-- HEADER -->
             <div class="flex items-center gap-4 mb-5">
@@ -75,7 +81,7 @@
                     method="POST"
                     enctype="multipart/form-data"
 
-                    class="grid grid-cols-2 gap-4">
+                    class="grid grid-cols-2 gap-x-4 gap-y-2">
 
                     @csrf
 
@@ -178,24 +184,44 @@
 
                     </div>
 
-                    <!-- LOCATION -->
+                    <!-- LOCATION INPUT -->
                     <div>
 
                         <label class="block text-sm
-                            font-semibold text-[#504E76] mb-2">
+        font-semibold text-[#504E76] mb-2">
 
                             Pickup Location
 
                         </label>
 
-                        <input
-                            type="text"
-                            name="pickup_location"
-                            placeholder="Pickup location"
+                        <div class="flex gap-2">
 
-                            class="w-full p-3 rounded-2xl
-                            bg-white/70 border border-white/30
-                            focus:outline-none text-sm">
+                            <input
+                                type="text"
+                                id="pickup_location"
+                                name="pickup_location"
+                                placeholder="Getting your location..."
+
+                                class="w-full p-3 rounded-2xl
+            bg-white/70 border border-white/30
+            focus:outline-none text-sm">
+
+                            <!-- BUTTON -->
+                            <button
+                                type="button"
+                                onclick="getLocation()"
+
+                                class="px-4 rounded-2xl
+            bg-[#504E76]
+            hover:bg-[#F1642E]
+            transition-all duration-300
+            text-white">
+
+                                <i class='bx bx-current-location'></i>
+
+                            </button>
+
+                        </div>
 
                     </div>
 
@@ -219,49 +245,94 @@
 
                     </div>
 
-                    <!-- PHOTO -->
-                    <div>
+                    <!-- BOTTOM SECTION -->
+                    <div class="col-span-2 grid grid-cols-2 gap-5">
 
-                        <label class="block text-sm
-                            font-semibold text-[#504E76] mb-2">
+                        <!-- MAP -->
+                        <div>
 
-                            Food Photo
+                            <div
+                                id="map"
+                                class="w-full h-[230px]
+            rounded-3xl overflow-hidden shadow-lg">
+                            </div>
 
-                        </label>
+                        </div>
 
-                        <input
-                            type="file"
-                            name="food_photo"
+                        <!-- RIGHT SIDE -->
+                        <div class="flex flex-col justify-between h-[250px]">
 
-                            class="w-full p-3 rounded-2xl
-                            bg-white/70 border border-white/30
-                            text-sm">
+                            <!-- FOOD PHOTO -->
+                            <div>
 
-                    </div>
+                                <label class="block text-sm font-semibold text-[#504E76] mb-2">
 
-                    <!-- DESCRIPTION -->
-                    <div>
+                                    Food Photo
 
-                        <label class="block text-sm
-                            font-semibold text-[#504E76] mb-2">
+                                </label>
 
-                            Description
+                                <label
+                                    class="w-full h-[60px]
+                                        bg-white/70 border border-white/30
+                                        rounded-2xl flex items-center px-4
+                                        cursor-pointer hover:bg-white/90
+                                        transition-all duration-300">
 
-                        </label>
+                                    <i class='bx bx-image-add
+                                        text-2xl text-[#504E76] mr-3'></i>
 
-                        <textarea
-                            name="description"
-                            rows="4"
-                            placeholder="Food details..."
+                                    <!-- FILE NAME -->
+                                    <span
+                                        id="file-name"
+                                        class="text-sm text-[#504E76]/70 truncate">
 
-                            class="w-full p-3 rounded-2xl
-                            bg-white/70 border border-white/30
-                            focus:outline-none resize-none text-sm"></textarea>
+                                        Upload food image
+
+                                    </span>
+
+                                    <input
+                                        type="file"
+                                        name="food_photo"
+                                        class="hidden"
+
+                                        onchange="
+                                            document.getElementById('file-name')
+                                            .innerText = this.files[0].name
+                                        ">
+
+                                </label>
+
+                            </div>
+
+                            <!-- DESCRIPTION -->
+                            <div class="mt-4 flex-1">
+
+                                <label class="block text-sm
+            font-semibold text-[#504E76] mb-2">
+
+                                    Description
+
+                                </label>
+
+                                <textarea
+                                    name="description"
+                                    placeholder="Food details..."
+
+                                    class="w-full h-[90px]
+                                    p-4 rounded-2xl
+                                    bg-white/70
+                                    border border-white/30
+                                    focus:outline-none
+                                    text-sm resize-none"></textarea>
+
+                            </div>
+
+                        </div>
 
                     </div>
 
                     <!-- BUTTON -->
-                    <div class="col-span-2 pt-1">
+                    <div class="col-span-2">
 
                         <button
                             type="submit"
@@ -285,6 +356,83 @@
         </main>
 
     </div>
+
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+    <script>
+        // DEFAULT MAP
+        let map = L.map('map').setView([-6.2088, 106.8456], 13);
+
+        // TILE
+        L.tileLayer(
+            'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; OpenStreetMap'
+            }
+        ).addTo(map);
+
+        // MARKER
+        let marker;
+
+        // GET LOCATION
+        function getLocation() {
+
+            if (navigator.geolocation) {
+
+                navigator.geolocation.getCurrentPosition(
+
+                    async function(position) {
+
+                            let lat = position.coords.latitude;
+                            let lng = position.coords.longitude;
+
+                            // MOVE MAP
+                            map.setView([lat, lng], 16);
+
+                            // REMOVE OLD MARKER
+                            if (marker) {
+                                map.removeLayer(marker);
+                            }
+
+                            // ADD NEW MARKER
+                            marker = L.marker([lat, lng])
+                                .addTo(map);
+
+                            // GET ADDRESS
+                            let response = await fetch(
+
+                                `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`
+
+                            );
+
+                            let data = await response.json();
+
+                            // INPUT VALUE
+                            document.getElementById(
+                                'pickup_location'
+                            ).value = data.display_name;
+
+                        },
+
+                        function(error) {
+
+                            alert(
+                                "Location access denied."
+                            );
+
+                        }
+                );
+
+            } else {
+
+                alert(
+                    "Geolocation is not supported."
+                );
+            }
+        }
+
+        // AUTO LOAD LOCATION
+        getLocation();
+    </script>
 
 </body>
 

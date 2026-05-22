@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Donation;
+use App\Models\DonationClaim;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use App\Models\User;
 use App\Models\Notification;
 
@@ -28,8 +30,6 @@ class SupplierController extends Controller
         )
 
             ->latest()
-
-            ->take(5)
 
             ->get();
 
@@ -68,12 +68,16 @@ class SupplierController extends Controller
 
             ->count();
 
-        $communitiesHelped = Donation::where(
-            'supplier_id',
-            $supplier->id
-        )
+        $communitiesHelped = DonationClaim::whereHas(
+            'donation',
+            function ($query) use ($supplier) {
 
-            ->whereNotNull('community_id')
+                $query->where(
+                    'supplier_id',
+                    $supplier->id
+                );
+            }
+        )
 
             ->distinct()
 
@@ -125,12 +129,15 @@ class SupplierController extends Controller
     |--------------------------------------------------------------------------
     */
 
-        $photo = $request
-            ->file('food_photo')
-            ->store(
-                'donation_photos',
-                'public'
-            );
+        $photoName = time() . '.' .
+            $request->food_photo->extension();
+
+        $request->food_photo->move(
+            public_path('donation_photos'),
+            $photoName
+        );
+
+        $photo = 'donation_photos/' . $photoName;
 
         $donation = Donation::create([
 
@@ -139,6 +146,8 @@ class SupplierController extends Controller
             'category' => $request->category,
 
             'quantity' => $request->quantity,
+
+            'remaining_quantity' => $request->quantity,
 
             'expired_date' => $request->expired_date,
 
@@ -200,12 +209,16 @@ class SupplierController extends Controller
 
     public function history()
     {
+        $supplier = Auth::user()->supplier;
+
         $histories = Donation::with([
-            'community',
+            'claims.community',
             'supplier'
         ])
 
-            ->orderBy('created_at', 'desc')
+            ->where('supplier_id', $supplier->id)
+
+            ->latest()
 
             ->paginate(8);
 
@@ -232,121 +245,189 @@ class SupplierController extends Controller
 
     public function updateSettings(Request $request)
     {
-        $user = User::find(Auth::id());
+        $request->validate([
 
-        $notification = Notification::latest()->first();
+            'username' => 'required',
 
-        /*
-    |--------------------------------------------------------------------------
-    | UPDATE PROFILE
-    |--------------------------------------------------------------------------
-    */
+            'email' => 'required|email',
 
-        if (
-            $request->username ||
-            $request->email ||
-            $request->no_telp
-        ) {
-            $user->username = $request->username;
+            'no_telp' => 'required'
+        ]);
 
-            $user->email = $request->email;
+        /** @var \App\Models\User $user */
+        $user = Auth::user();
 
-            $user->no_telp = $request->no_telp;
+        // UPDATE DATA
+        $user->username = $request->username;
+        $user->email = $request->email;
+        $user->no_telp = $request->no_telp;
 
-            /*
-        |--------------------------------------------------------------------------
-        | PROFILE PHOTO
-        |--------------------------------------------------------------------------
-        */
+        // PHOTO
+        if ($request->hasFile('profile_photo')) {
 
-            if ($request->hasFile('profile_photo')) {
-                $photo = $request
-                    ->file('profile_photo')
-                    ->store(
-                        'profile_photos',
-                        'public'
-                    );
+            $photoName = time() . '.' .
+                $request->profile_photo->extension();
 
-                $user->profile_photo = $photo;
-            }
-
-            $user->save();
-        }
-
-        /*
-    |--------------------------------------------------------------------------
-    | UPDATE NOTIFICATION
-    |--------------------------------------------------------------------------
-    */
-
-        if ($request->notification_sound) {
-            $notification->update([
-
-                'notification_enabled' =>
-                $request->has('notification_enabled'),
-
-                'notification_sound' =>
-                $request->notification_sound,
-
-            ]);
-        }
-
-        return redirect('/settings')
-            ->with(
-                'success',
-                'Settings updated successfully'
+            $request->profile_photo->move(
+                public_path('profile_photos'),
+                $photoName
             );
+
+            $user->profile_photo =
+                'profile_photos/' . $photoName;
+        }
+
+        $user->save();
+
+        return back()->with(
+            'success',
+            'Profile updated successfully'
+        );
     }
 
     public function approveDonation($id)
     {
-        $donation = Donation::with([
-            'community',
-            'supplier'
+        $claim = DonationClaim::with([
+            'donation',
+            'community'
         ])->findOrFail($id);
 
         /*
-    |--------------------------------------------------------------------------
-    | UPDATE STATUS
-    |--------------------------------------------------------------------------
-    */
+|--------------------------------------------------------------------------
+| UPDATE CLAIM STATUS
+|--------------------------------------------------------------------------
+*/
 
-        $donation->update([
+        $claim->update([
 
-            'status' => 'distribution'
+            'status' => 'approved'
+
         ]);
 
         /*
-    |--------------------------------------------------------------------------
-    | NOTIFICATION TO COMMUNITY
-    |--------------------------------------------------------------------------
-    */
+|--------------------------------------------------------------------------
+| NOTIFICATION
+|--------------------------------------------------------------------------
+*/
 
         Notification::create([
 
-            'user_id' => $donation
-                ->community
-                ->user_id,
-
-            'donation_id' => $donation->id,
+            'user_id' => $claim->community->user_id,
 
             'title' => 'Pickup Approved',
 
             'message' =>
 
-            $donation->supplier->nama_toko .
+            'Your request for "' .
 
-                ' approved your pickup request for "' .
+                $claim->donation->food_name .
 
-                $donation->food_name .
-
-                '".',
+                '" has been approved.',
 
             'type' => 'approved',
 
             'is_read' => 0
+
         ]);
 
-        return back();
+        return back()->with(
+            'success',
+            'Claim approved successfully'
+        );
+    }
+
+    public function updatePassword(Request $request)
+    {
+        $request->validate([
+
+            'current_password' => 'required',
+
+            'new_password' => 'required|min:6|confirmed'
+        ]);
+
+        /** @var \App\Models\User $user */
+        $user = Auth::user();
+
+        // CHECK PASSWORD
+        if (!Hash::check(
+            $request->current_password,
+            $user->password
+        )) {
+
+            return back()->with(
+                'error',
+                'Current password is incorrect'
+            );
+        }
+
+        // UPDATE
+        $user->password = Hash::make(
+            $request->new_password
+        );
+
+        $user->save();
+
+        return back()->with(
+            'success',
+            'Password updated successfully'
+        );
+    }
+
+    public function sendDistribution(Request $request, $id)
+    {
+        $request->validate([
+
+            'delivery_date' => 'required',
+
+            'courier_name' => 'required',
+
+            'courier_phone' => 'required',
+
+            'supplier_proof_photo' => 'required|image'
+        ]);
+
+        $claim = DonationClaim::findOrFail($id);
+
+        /*
+    |------------------------------------------------------------------
+    | UPLOAD PHOTO
+    |------------------------------------------------------------------
+    */
+
+        $photoName = time() . '.' .
+            $request->supplier_proof_photo->extension();
+
+        $request->supplier_proof_photo->move(
+            public_path('distribution_photos'),
+            $photoName
+        );
+
+        /*
+    |------------------------------------------------------------------
+    | UPDATE CLAIM
+    |------------------------------------------------------------------
+    */
+
+        $claim->update([
+
+            'delivery_date' =>
+            $request->delivery_date,
+
+            'courier_name' =>
+            $request->courier_name,
+
+            'courier_phone' =>
+            $request->courier_phone,
+
+            'supplier_proof_photo' =>
+            'distribution_photos/' . $photoName,
+
+            'status' => 'distribution'
+        ]);
+
+        return back()->with(
+            'success',
+            'Distribution started successfully'
+        );
     }
 }

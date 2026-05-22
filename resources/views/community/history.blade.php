@@ -80,8 +80,7 @@
 
                     <!-- IMAGE -->
                     <img
-                        src="{{ asset('storage/' . $history->food_photo) }}"
-
+                        src="{{ asset($history->donation->food_photo) }}"
                         class="w-full h-[120px]
                         object-cover rounded-2xl">
 
@@ -92,7 +91,7 @@
 
                             <h1 class="text-lg font-black text-[#504E76] leading-tight">
 
-                                {{ $history->food_name }}
+                                {{ $history->donation->food_name }}
 
                             </h1>
 
@@ -141,7 +140,7 @@
 
                                 <h1 class="font-bold text-[#504E76] text-xs mt-1">
 
-                                    {{ $history->quantity }}
+                                    {{ $history->claimed_quantity }}
 
                                 </h1>
 
@@ -157,7 +156,7 @@
 
                                 <h1 class="font-bold text-[#504E76] text-xs mt-1">
 
-                                    {{ $history->supplier->nama_toko ?? '-' }}
+                                    {{ $history->donation->supplier->nama_toko ?? '-' }}
 
                                 </h1>
 
@@ -173,7 +172,7 @@
 
                                 <h1 class="font-bold text-[#504E76] text-xs mt-1">
 
-                                    {{ $history->expired_date }}
+                                    {{ $history->donation->expired_date }}
 
                                 </h1>
 
@@ -194,7 +193,7 @@
 
                                 <h1 class="font-bold text-[#504E76] text-xs mt-1">
 
-                                    {{ $history->pickup_time }}
+                                    {{ $history->donation->pickup_time }}
 
                                 </h1>
 
@@ -210,13 +209,15 @@
 
                                 <h1 class="font-bold text-[#504E76] text-xs mt-1 truncate">
 
-                                    {{ $history->pickup_location }}
+                                    {{ $history->donation->pickup_location }}
 
                                 </h1>
 
                             </div>
 
                         </div>
+
+                        
 
                     </div>
 
@@ -225,7 +226,7 @@
 
                         <!-- MAP -->
                         <a
-                            href="https://www.google.com/maps/search/?api=1&query={{ urlencode($history->pickup_location) }}"
+                            href="https://www.google.com/maps/search/?api=1&query={{ urlencode($history->donation->pickup_location) }}"
 
                             target="_blank"
 
@@ -250,17 +251,11 @@
                         @if($history->status == 'distribution')
 
                         <button
-                            onclick="openModal('{{ $history->id }}')"
+                            onclick="openDetailModal('{{ $history->id }}')"
 
-                            class="w-1/2
-                            bg-[#A3B565]
-                            hover:bg-[#8ea14f]
-                            transition-all duration-300
-                            text-white
-                            py-2 rounded-2xl
-                            text-xs font-semibold">
+                            class="w-1/2 bg-[#A3B565] hover:bg-[#8ea14f] transition-all duration-300 text-white py-2 rounded-2xl text-xs font-semibold">
 
-                            Receive
+                            Detail
 
                         </button>
 
@@ -274,120 +269,119 @@
 
             </div>
 
-        </main>
 
-        <!-- MODALS -->
-        @foreach($histories as $history)
+            <!-- MODALS -->
+            @foreach($histories as $history)
 
-        <div
-            id="modal-{{ $history->id }}"
+            <div
+                id="modal-{{ $history->id }}"
 
-            class="hidden fixed inset-0
+                class="hidden fixed inset-0
             bg-black/40 backdrop-blur-sm
             z-50 flex items-center justify-center px-4">
 
-            <div class="bg-white rounded-3xl
+                <div class="bg-white rounded-3xl
             p-6 w-full max-w-[400px]
             shadow-2xl">
 
-                <!-- HEADER -->
-                <div class="flex items-center justify-between mb-5">
+                    <!-- HEADER -->
+                    <div class="flex items-center justify-between mb-5">
 
-                    <h1 class="text-xl font-black text-[#504E76]">
+                        <h1 class="text-xl font-black text-[#504E76]">
 
-                        Confirm Donation
+                            Confirm Donation
 
-                    </h1>
+                        </h1>
 
-                    <button
-                        type="button"
+                        <button
+                            type="button"
 
-                        onclick="closeModal('{{ $history->id }}')"
+                            onclick="closeModal('{{ $history->id }}')"
 
-                        class="text-3xl text-[#504E76] leading-none">
+                            class="text-3xl text-[#504E76] leading-none">
 
-                        &times;
+                            &times;
 
-                    </button>
-
-                </div>
-
-                <!-- FORM -->
-                <form
-                    action="/complete-donation/{{ $history->id }}"
-                    method="POST"
-                    enctype="multipart/form-data">
-
-                    @csrf
-
-                    <!-- INFO -->
-                    <div class="space-y-3">
-
-                        <div>
-
-                            <p class="text-xs text-[#504E76]/60">
-
-                                Food Name
-
-                            </p>
-
-                            <h1 class="font-bold text-[#504E76] text-base">
-
-                                {{ $history->food_name }}
-
-                            </h1>
-
-                        </div>
-
-                        <div>
-
-                            <p class="text-xs text-[#504E76]/60">
-
-                                Supplier
-
-                            </p>
-
-                            <h1 class="font-bold text-[#504E76] text-base">
-
-                                {{ $history->supplier->nama_toko ?? '-' }}
-
-                            </h1>
-
-                        </div>
-
-                        <div>
-
-                            <p class="text-xs text-[#504E76]/60">
-
-                                Quantity
-
-                            </p>
-
-                            <h1 class="font-bold text-[#504E76] text-base">
-
-                                {{ $history->quantity }}
-
-                            </h1>
-
-                        </div>
+                        </button>
 
                     </div>
 
-                    <!-- PROOF PHOTO -->
-                    <div class="mt-5">
+                    <!-- FORM -->
+                    <form
+                        action="/complete-donation/{{ $history->id }}"
+                        method="POST"
+                        enctype="multipart/form-data">
 
-                        <label class="block text-sm font-semibold text-[#504E76] mb-2">
+                        @csrf
 
-                            Upload Proof Photo
+                        <!-- INFO -->
+                        <div class="space-y-3">
 
-                        </label>
+                            <div>
 
-                        <input
-                            type="file"
-                            name="proof_photo"
-                            required
+                                <p class="text-xs text-[#504E76]/60">
 
-                            class="w-full bg-white/60
+                                    Food Name
+
+                                </p>
+
+                                <h1 class="font-bold text-[#504E76] text-base">
+
+                                    {{ $history->donation->food_name }}
+
+                                </h1>
+
+                            </div>
+
+                            <div>
+
+                                <p class="text-xs text-[#504E76]/60">
+
+                                    Supplier
+
+                                </p>
+
+                                <h1 class="font-bold text-[#504E76] text-base">
+
+                                    {{ $history->donation->supplier->nama_toko ?? '-' }}
+
+                                </h1>
+
+                            </div>
+
+                            <div>
+
+                                <p class="text-xs text-[#504E76]/60">
+
+                                    Quantity
+
+                                </p>
+
+                                <h1 class="font-bold text-[#504E76] text-base">
+
+                                    {{ $history->claimed_quantity }}
+
+                                </h1>
+
+                            </div>
+
+                        </div>
+
+                        <!-- PROOF PHOTO -->
+                        <div class="mt-5">
+
+                            <label class="block text-sm font-semibold text-[#504E76] mb-2">
+
+                                Upload Proof Photo
+
+                            </label>
+
+                            <input
+                                type="file"
+                                name="proof_photo"
+                                required
+
+                                class="w-full bg-white/60
                             border border-white/30
                             rounded-2xl
                             px-4 py-3
@@ -401,51 +395,196 @@
                             file:bg-[#504E76]
                             file:text-white
                             file:cursor-pointer">
-                    </div>
+                        </div>
 
-                    <!-- ACTION -->
-                    <div class="flex gap-3 mt-6">
+                        <!-- ACTION -->
+                        <div class="flex gap-3 mt-6">
 
-                        <!-- CANCEL -->
-                        <button
-                            type="button"
+                            <!-- CANCEL -->
+                            <button
+                                type="button"
 
-                            onclick="closeModal('{{ $history->id }}')"
+                                onclick="closeModal('{{ $history->id }}')"
 
-                            class="flex-1 bg-gray-200
+                                class="flex-1 bg-gray-200
                             hover:bg-gray-300
                             transition-all duration-300
                             py-3 rounded-2xl
                             font-semibold text-[#504E76] text-sm">
 
-                            Cancel
+                                Cancel
 
-                        </button>
+                            </button>
 
-                        <!-- CONFIRM -->
-                        <button
-                            type="submit"
+                            <!-- CONFIRM -->
+                            <button
+                                type="submit"
 
-                            class="flex-1 bg-[#504E76]
+                                class="flex-1 bg-[#504E76]
                             hover:bg-[#F1642E]
                             transition-all duration-300
                             text-white py-3
                             rounded-2xl
                             font-semibold text-sm">
 
-                            Confirm
+                                Confirm
+
+                            </button>
+
+                        </div>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+            @endforeach
+
+            @foreach($histories as $history)
+
+            <div
+                id="detail-modal-{{ $history->id }}"
+
+                class="hidden fixed inset-0
+    bg-black/40 backdrop-blur-sm
+    z-50 flex items-center justify-center px-4">
+
+                <div class="bg-white rounded-3xl
+    p-6 w-full max-w-[420px]
+    shadow-2xl">
+
+                    <!-- HEADER -->
+                    <div class="flex items-center justify-between mb-5">
+
+                        <h1 class="text-xl font-black text-[#504E76]">
+
+                            Distribution Detail
+
+                        </h1>
+
+                        <button
+                            type="button"
+
+                            onclick="closeDetailModal('{{ $history->id }}')"
+
+                            class="text-3xl text-[#504E76] leading-none">
+
+                            &times;
 
                         </button>
 
                     </div>
 
-                </form>
+                    <!-- INFO -->
+                    <div class="space-y-4">
+
+                        <div>
+
+                            <p class="text-xs text-[#504E76]/60">
+
+                                Courier
+
+                            </p>
+
+                            <h1 class="font-bold text-[#504E76]">
+
+                                {{ $history->courier_name }}
+
+                            </h1>
+
+                        </div>
+
+                        <div>
+
+                            <p class="text-xs text-[#504E76]/60">
+
+                                Phone
+
+                            </p>
+
+                            <h1 class="font-bold text-[#504E76]">
+
+                                {{ $history->courier_phone }}
+
+                            </h1>
+
+                        </div>
+
+                        <div>
+
+                            <p class="text-xs text-[#504E76]/60">
+
+                                Delivery Date
+
+                            </p>
+
+                            <h1 class="font-bold text-[#504E76]">
+
+                                {{ $history->delivery_date }}
+
+                            </h1>
+
+                        </div>
+
+                        @if($history->supplier_proof_photo)
+
+                        <img
+                            src="{{ asset($history->supplier_proof_photo) }}"
+
+                            class="w-full h-[180px]
+                object-cover rounded-2xl">
+
+                        @endif
+
+                    </div>
+
+                    <!-- BUTTON -->
+                    <div class="flex gap-3 mt-6">
+
+                        <button
+                            type="button"
+
+                            onclick="closeDetailModal('{{ $history->id }}')"
+
+                            class="flex-1 bg-gray-200
+                hover:bg-gray-300
+                transition-all duration-300
+                py-3 rounded-2xl
+                font-semibold text-[#504E76] text-sm">
+
+                            Close
+
+                        </button>
+
+                        <!-- RECEIVE -->
+                        <button
+                            onclick="
+                    closeDetailModal('{{ $history->id }}');
+                    openModal('{{ $history->id }}');
+                "
+
+                            class="flex-1 bg-[#504E76]
+                hover:bg-[#F1642E]
+                transition-all duration-300
+                text-white py-3
+                rounded-2xl
+                font-semibold text-sm">
+
+                            Receive
+
+                        </button>
+
+                    </div>
+
+                </div>
 
             </div>
 
-        </div>
+            @endforeach
 
-        @endforeach
+
+        </main>
 
     </div>
 
@@ -461,6 +600,20 @@
 
             document
                 .getElementById(`modal-${id}`)
+                .classList.add('hidden')
+        }
+
+        function openDetailModal(id) {
+
+            document
+                .getElementById(`detail-modal-${id}`)
+                .classList.remove('hidden')
+        }
+
+        function closeDetailModal(id) {
+
+            document
+                .getElementById(`detail-modal-${id}`)
                 .classList.add('hidden')
         }
     </script>

@@ -24,7 +24,7 @@
         <!-- MAIN CONTENT -->
         <main
             id="mainContent"
-            class="flex-1 overflow-y-auto px-8 py-8">
+            class="flex-1 overflow-y-auto px-8 py-8 pt-8">
 
             <!-- TOPBAR -->
             <div class="flex items-center justify-between mb-6">
@@ -43,8 +43,8 @@
 
                 <!-- PROFILE -->
                 <div class="bg-white/30 backdrop-blur-2xl
-        rounded-2xl px-5 py-3
-        flex items-center gap-4 shadow-xl">
+                            rounded-2xl px-5 py-3
+                            flex items-center gap-4 shadow-xl">
 
                     <div>
 
@@ -60,11 +60,12 @@
 
                     <img
                         src="{{ Auth::user()->profile_photo
-                ? asset('storage/' . Auth::user()->profile_photo)
-                : 'https://ui-avatars.com/api/?name=' . Auth::user()->username }}"
+                        ? asset(Auth::user()->profile_photo)
+                        : 'https://ui-avatars.com/api/?name=' . urlencode(Auth::user()->username) }}"
 
-                        class="w-12 h-12 rounded-full
-                object-cover border-2 border-white shadow-lg">
+                        onerror="this.src='https://ui-avatars.com/api/?name={{ urlencode(Auth::user()->username) }}'"
+
+                        class="w-12 h-12 rounded-full object-cover border-2 border-white shadow-lg">
 
                 </div>
 
@@ -199,72 +200,90 @@
             <div class="grid grid-cols-3 gap-5 mb-5">
 
                 <!-- ACTIVE DONATION -->
-                <div class="col-span-2 bg-white/30
-        backdrop-blur-2xl rounded-3xl
-        p-6 shadow-xl">
+                <div class="col-span-2 bg-white/30 backdrop-blur-2xl rounded-3xl p-6 shadow-xl">
 
+                    <!-- HEADER -->
                     <div class="flex items-center justify-between mb-5">
 
                         <h1 class="text-2xl font-black text-[#504E76]">
+
                             Active Donations
+
                         </h1>
 
                         <i class='bx bx-donate-heart text-3xl text-[#504E76]'></i>
 
                     </div>
 
-                    <div class="space-y-4">
+                    <!-- GRID -->
+                    <div class="grid grid-cols-3 gap-2">
 
-                        @foreach($donations as $donation)
+                        @foreach($donations->take(9) as $donation)
 
-                        <div class="bg-white/40 rounded-2xl p-4
-        flex items-center justify-between">
+                        <!-- CARD -->
+                        <div class="bg-white/40 rounded-2xl p-4">
 
-                            <div>
+                            <!-- TOP -->
+                            <div class="flex items-start justify-between gap-3">
 
-                                <h1 class="font-bold text-[#504E76]">
+                                <div>
 
-                                    {{ $donation->food_name }}
+                                    <h1 class="font-black text-[#504E76] text-lg leading-tight">
 
-                                </h1>
+                                        {{ \Illuminate\Support\Str::limit($donation->food_name, 8, '...') }}
 
-                                <p class="text-sm text-[#504E76]/60">
+                                    </h1>
 
-                                    {{ $donation->quantity }} portions •
+                                    <p class="text-sm text-[#504E76]/60 mt-1">
+
+                                        {{ $donation->quantity }} portions
+
+                                    </p>
+
+                                </div>
+
+                                <!-- STATUS -->
+                                <span
+                                    class="px-3 py-1 rounded-xl text-xs font-semibold whitespace-nowrap
+
+                                    @if($donation->status == 'pending')
+                                        bg-yellow-100 text-yellow-700
+                                    @elseif($donation->status == 'distribution')
+                                        bg-blue-100 text-blue-700
+                                    @elseif($donation->status == 'completed')
+                                        bg-green-100 text-green-700
+                                    @elseif($donation->status == 'compost')
+                                        bg-orange-100 text-orange-700
+                                    @else
+                                        bg-gray-100 text-gray-700
+                                    @endif
+                                ">
 
                                     {{ ucfirst($donation->status) }}
 
-                                </p>
+                                </span>
 
                             </div>
 
-                            <!-- STATUS -->
-                            <span
-                                class="
-            px-4 py-2 rounded-xl text-sm font-semibold
+                            <!-- BOTTOM -->
+                            <div class="mt-4 flex items-center justify-between">
 
-            @if($donation->status == 'pending')
-                bg-yellow-100 text-yellow-700
-            @elseif($donation->status == 'distribution')
-                bg-blue-100 text-blue-700
-            @elseif($donation->status == 'completed')
-                bg-green-100 text-green-700
-            @elseif($donation->status == 'compost')
-                bg-orange-100 text-orange-700
-            @else
-                bg-gray-100 text-gray-700
-            @endif
-        ">
+                                <p class="text-xs text-[#504E76]/50">
 
-                                {{ ucfirst($donation->status) }}
+                                    {{ $donation->created_at->format('d M Y') }}
 
-                            </span>
+                                </p>
+
+                                <i class='bx bx-package text-[#504E76] text-xl'></i>
+
+                            </div>
 
                         </div>
 
                         @endforeach
 
                     </div>
+
                 </div>
 
                 <!-- QUICK ACTION -->
@@ -326,145 +345,6 @@
                             </span>
 
                         </a>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-            <!-- DISTRIBUTION TIMELINE -->
-            <div class="bg-white/30 backdrop-blur-2xl
-    rounded-3xl p-6 shadow-xl mb-5">
-
-                <div class="flex items-center justify-between mb-6">
-
-                    <h1 class="text-2xl font-black text-[#504E76]">
-                        Distribution Timeline
-                    </h1>
-
-                    <i class='bx bx-line-chart text-3xl text-[#504E76]'></i>
-
-                </div>
-
-                <div class="flex items-center justify-between">
-
-                    <div class="flex flex-col items-center">
-
-                        <div class="w-5 h-5 bg-[#A3B565]
-                rounded-full"></div>
-
-                        <p class="mt-2 text-sm font-semibold text-[#504E76]">
-                            Donated
-                        </p>
-
-                    </div>
-
-                    <div class="flex-1 h-1 bg-[#A3B565]/40 mx-3"></div>
-
-                    <div class="flex flex-col items-center">
-
-                        <div class="w-5 h-5 bg-[#F8C15C]
-                rounded-full"></div>
-
-                        <p class="mt-2 text-sm font-semibold text-[#504E76]">
-                            Picked Up
-                        </p>
-
-                    </div>
-
-                    <div class="flex-1 h-1 bg-[#F8C15C]/40 mx-3"></div>
-
-                    <div class="flex flex-col items-center">
-
-                        <div class="w-5 h-5 bg-[#4DA8FF]
-                rounded-full"></div>
-
-                        <p class="mt-2 text-sm font-semibold text-[#504E76]">
-                            Distributed
-                        </p>
-
-                    </div>
-
-                    <div class="flex-1 h-1 bg-[#4DA8FF]/40 mx-3"></div>
-
-                    <div class="flex flex-col items-center">
-
-                        <div class="w-5 h-5 bg-[#A3B565]
-                rounded-full"></div>
-
-                        <p class="mt-2 text-sm font-semibold text-[#504E76]">
-                            Completed
-                        </p>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-            <!-- IMPACT -->
-            <div class="bg-white/30 backdrop-blur-2xl
-    rounded-3xl p-6 shadow-xl">
-
-                <div class="flex items-center justify-between mb-5">
-
-                    <h1 class="text-2xl font-black text-[#504E76]">
-                        Food Waste Impact
-                    </h1>
-
-                    <i class='bx bx-bar-chart-alt-2 text-3xl text-[#504E76]'></i>
-
-                </div>
-
-                <!-- BAR -->
-                <div class="space-y-5">
-
-                    <div>
-
-                        <div class="flex items-center justify-between mb-2">
-
-                            <p class="font-semibold text-[#504E76]">
-                                Saved Food
-                            </p>
-
-                            <p class="text-sm text-[#504E76]/70">
-                                78%
-                            </p>
-
-                        </div>
-
-                        <div class="w-full h-4 bg-white/40 rounded-full">
-
-                            <div class="h-4 w-[78%]
-                    bg-[#A3B565]
-                    rounded-full"></div>
-
-                        </div>
-
-                    </div>
-
-                    <div>
-
-                        <div class="flex items-center justify-between mb-2">
-
-                            <p class="font-semibold text-[#504E76]">
-                                Distributed Successfully
-                            </p>
-
-                            <p class="text-sm text-[#504E76]/70">
-                                91%
-                            </p>
-
-                        </div>
-
-                        <div class="w-full h-4 bg-white/40 rounded-full">
-
-                            <div class="h-4 w-[91%]
-                    bg-[#504E76]
-                    rounded-full"></div>
-
-                        </div>
 
                     </div>
 

@@ -67,23 +67,18 @@
             </div>
 
             <!-- LIST -->
+            <!-- LIST -->
             <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
 
                 @foreach($histories as $history)
 
-                <div class="bg-white/30
-    backdrop-blur-2xl
-    border border-white/20
-    rounded-[24px]
-    p-3
-    shadow-lg">
+                <div class="bg-white/30 backdrop-blur-2xl border border-white/20 rounded-[24px] p-3 shadow-lg">
 
                     <!-- IMAGE -->
                     <img
-                        src="{{ asset('storage/' . $history->food_photo) }}"
-
-                        class="w-full h-[100px]
-            object-cover rounded-2xl">
+                        src="{{ asset($history->food_photo) }}"
+                        onerror="this.src='https://placehold.co/600x400?text=No+Image'"
+                        class="w-full h-[100px] object-cover rounded-2xl">
 
                     <!-- TOP -->
                     <div class="mt-3">
@@ -96,29 +91,6 @@
 
                             </h1>
 
-                            <!-- STATUS -->
-                            <div class="
-                px-2 py-[4px]
-                rounded-lg
-                text-[8px]
-                font-semibold
-                whitespace-nowrap
-
-                @if($history->status == 'requested')
-                    bg-yellow-100 text-yellow-700
-                @elseif($history->status == 'distribution')
-                    bg-blue-100 text-blue-700
-                @elseif($history->status == 'completed')
-                    bg-green-100 text-green-700
-                @elseif($history->status == 'pending')
-                    bg-gray-100 text-gray-700
-                @endif
-                ">
-
-                                {{ ucfirst($history->status) }}
-
-                            </div>
-
                         </div>
 
                         <!-- DATE -->
@@ -129,17 +101,16 @@
                         </p>
 
                     </div>
-
                     <!-- INFO -->
-                    <div class="mt-3 space-y-2">
+                    <div class="mt-3 space-y-3">
 
-                        <!-- ROW 1 -->
+                        <!-- ROW -->
                         <div class="flex justify-between gap-2">
 
                             <div>
 
                                 <p class="text-[8px] text-[#504E76]/50">
-                                    Qty
+                                    Total Qty
                                 </p>
 
                                 <h1 class="font-bold text-[#504E76] text-[10px] mt-1">
@@ -150,15 +121,15 @@
 
                             </div>
 
-                            <div class="text-center">
+                            <div>
 
                                 <p class="text-[8px] text-[#504E76]/50">
-                                    Community
+                                    Remaining
                                 </p>
 
                                 <h1 class="font-bold text-[#504E76] text-[10px] mt-1">
 
-                                    {{ $history->community?->nama_komunitas ?? '-' }}
+                                    {{ $history->remaining_quantity }}
 
                                 </h1>
 
@@ -180,92 +151,162 @@
 
                         </div>
 
-                        <!-- ROW 2 -->
-                        <div class="flex justify-between gap-2">
+                        <!-- CLAIMS -->
+                        @foreach($history->claims as $claim)
 
-                            <div>
+                        <div class="bg-white/40 rounded-2xl p-3">
 
-                                <p class="text-[8px] text-[#504E76]/50">
-                                    Pickup
-                                </p>
+                            <!-- TOP -->
+                            <div class="flex items-center justify-between">
 
-                                <h1 class="font-bold text-[#504E76] text-[10px] mt-1">
+                                <div>
 
-                                    {{ $history->pickup_time }}
+                                    <p class="text-[8px] text-[#504E76]/50">
+                                        Community
+                                    </p>
 
-                                </h1>
+                                    <h1 class="font-bold text-[#504E76] text-[11px]">
+
+                                        {{ $claim->community->nama_komunitas }}
+
+                                    </h1>
+
+                                </div>
+
+                                <!-- STATUS -->
+                                <div class="
+                px-2 py-1 rounded-lg
+                text-[8px]
+                font-semibold
+
+                @if($claim->status == 'requested')
+                    bg-yellow-100 text-yellow-700
+
+                @elseif($claim->status == 'approved')
+                    bg-blue-100 text-blue-700
+
+                @elseif($claim->status == 'distribution')
+                    bg-purple-100 text-purple-700
+
+                @elseif($claim->status == 'completed')
+                    bg-green-100 text-green-700
+
+                @endif
+            ">
+
+                                    {{ ucfirst($claim->status) }}
+
+                                </div>
 
                             </div>
 
-                            <div class="text-right max-w-[55%]">
+                            <!-- CLAIM INFO -->
+                            <div class="mt-2 flex justify-between items-center">
 
-                                <p class="text-[8px] text-[#504E76]/50">
-                                    Location
+                                <div>
+
+                                    <p class="text-[8px] text-[#504E76]/50">
+                                        Claimed
+                                    </p>
+
+                                    <h1 class="font-bold text-[#504E76] text-[10px]">
+
+                                        {{ $claim->claimed_quantity }} portions
+
+                                    </h1>
+
+                                </div>
+
+                                <!-- ACCEPT -->
+                                @if($claim->status == 'requested')
+
+                                <form
+                                    action="/approve-donation/{{ $claim->id }}"
+                                    method="POST">
+
+                                    @csrf
+
+                                    <button
+                                        class="bg-[#A3B565]
+        hover:bg-[#8ea14f]
+        transition-all duration-300
+        text-white
+        px-4 py-2
+        rounded-xl
+        text-[9px]
+        font-semibold">
+
+                                        Accept
+
+                                    </button>
+
+                                </form>
+
+                                @elseif($claim->status == 'approved')
+
+                                <button
+                                    onclick="openModal('{{ $claim->id }}')"
+
+                                    class="bg-[#504E76]
+    hover:bg-[#F1642E]
+    transition-all duration-300
+    text-white
+    px-4 py-2
+    rounded-xl
+    text-[9px]
+    font-semibold">
+
+                                    Send
+
+                                </button>
+
+                                @elseif($claim->status == 'distribution')
+
+                                <p class="text-[9px] text-purple-600 font-semibold">
+
+                                    Waiting Confirmation
+
                                 </p>
 
-                                <h1 class="font-bold text-[#504E76] text-[10px] mt-1 truncate">
+                                @elseif($claim->status == 'completed')
 
-                                    {{ $history->pickup_location }}
+                                <p class="text-[9px] text-green-600 font-semibold">
 
-                                </h1>
+                                    Completed
+
+                                </p>
+
+                                @endif
 
                             </div>
 
                         </div>
 
+                        @endforeach
+
                     </div>
 
-                    <!-- BUTTONS -->
-                    <div class="flex gap-2 mt-3">
+                    <!-- BUTTON -->
+                    <div class="mt-3">
 
-                        <!-- MAP -->
                         <a
                             href="https://www.google.com/maps/search/?api=1&query={{ urlencode($history->pickup_location) }}"
                             target="_blank"
 
-                            class="
-                {{ $history->status == 'requested' ? 'w-1/2' : 'w-full' }}
-
-                bg-[#504E76]
-                hover:bg-[#F1642E]
-                transition-all duration-300
-                text-white
-                py-2 rounded-xl
-                flex items-center justify-center gap-1
-                text-[9px] font-semibold">
+                            class="w-full
+        bg-[#504E76]
+        hover:bg-[#F1642E]
+        transition-all duration-300
+        text-white
+        py-2 rounded-xl
+        flex items-center justify-center gap-1
+        text-[9px] font-semibold">
 
                             <i class='bx bx-map text-xs'></i>
 
                             Maps
 
                         </a>
-
-                        <!-- ACCEPT -->
-                        @if($history->status == 'requested')
-
-                        <form
-                            action="/approve-donation/{{ $history->id }}"
-                            method="POST"
-                            class="w-1/2">
-
-                            @csrf
-
-                            <button
-                                class="w-full
-                    bg-[#A3B565]
-                    hover:bg-[#8ea14f]
-                    transition-all duration-300
-                    text-white
-                    py-2 rounded-xl
-                    text-[9px] font-semibold">
-
-                                Accept
-
-                            </button>
-
-                        </form>
-
-                        @endif
 
                     </div>
 
@@ -274,11 +315,218 @@
                 @endforeach
 
             </div>
-
-
         </main>
 
     </div>
+
+    @foreach($histories as $history)
+
+    @foreach($history->claims as $claim)
+
+    <div
+        id="modal-{{ $claim->id }}"
+
+        class="hidden fixed inset-0
+        bg-black/40 backdrop-blur-sm
+        z-50 flex items-center justify-center px-4">
+
+        <div class="bg-white rounded-3xl
+        p-6 w-full max-w-[400px]
+        shadow-2xl">
+
+            <div class="flex items-center justify-between mb-5">
+
+                <h1 class="text-xl font-black text-[#504E76]">
+
+                    Distribution Proof
+
+                </h1>
+
+                <button
+                    type="button"
+
+                    onclick="closeModal('{{ $claim->id }}')"
+
+                    class="text-3xl text-[#504E76] leading-none">
+
+                    &times;
+
+                </button>
+
+            </div>
+
+            <form
+                action="/send-distribution/{{ $claim->id }}"
+                method="POST"
+                enctype="multipart/form-data">
+
+                @csrf
+
+                <!-- DELIVERY DATE -->
+                <div class="mb-3">
+
+                    <label class="block text-sm font-semibold text-[#504E76] mb-2">
+
+                        Delivery Date
+
+                    </label>
+
+                    <input
+                        type="datetime-local"
+                        name="delivery_date"
+                        required
+
+                        class="w-full bg-white/60
+            border border-white/30
+            rounded-2xl
+            px-4 py-3
+            text-sm text-[#504E76]">
+                </div>
+
+                <!-- COURIER NAME -->
+                <div class="mb-3">
+
+                    <label class="block text-sm font-semibold text-[#504E76] mb-2">
+
+                        Courier Name
+
+                    </label>
+
+                    <input
+                        type="text"
+                        name="courier_name"
+                        required
+
+                        placeholder="Input courier name"
+
+                        class="w-full bg-white/60
+            border border-white/30
+            rounded-2xl
+            px-4 py-3
+            text-sm text-[#504E76]">
+                </div>
+
+                <!-- COURIER PHONE -->
+                <div class="mb-3">
+
+                    <label class="block text-sm font-semibold text-[#504E76] mb-2">
+
+                        Courier Phone
+
+                    </label>
+
+                    <input
+                        type="text"
+                        name="courier_phone"
+                        required
+
+                        placeholder="08xxxxxxxxxx"
+
+                        class="w-full bg-white/60
+            border border-white/30
+            rounded-2xl
+            px-4 py-3
+            text-sm text-[#504E76]">
+                </div>
+
+                <!-- PHOTO -->
+                <div class="mb-4">
+
+                    <label class="block text-sm font-semibold text-[#504E76] mb-2">
+
+                        Distribution Proof Photo
+
+                    </label>
+
+                    <input
+                        type="file"
+                        name="supplier_proof_photo"
+                        required
+
+                        class="w-full bg-white/60
+            border border-white/30
+            rounded-2xl
+            px-4 py-3
+            text-sm text-[#504E76]">
+                </div>
+
+                <!-- BUTTON -->
+                <button
+                    type="submit"
+
+                    class="w-full
+        bg-[#504E76]
+        hover:bg-[#F1642E]
+        transition-all duration-300
+        text-white py-3
+        rounded-2xl
+        font-semibold text-sm">
+
+                    Start Distribution
+
+                </button>
+
+            </form>
+
+        </div>
+
+    </div>
+
+    @endforeach
+
+    @endforeach
+
+    @if($history->status == 'distribution')
+
+    <div class="mt-3 bg-white/40 rounded-2xl p-3">
+
+        <p class="text-[10px] text-[#504E76]/50">
+            Courier
+        </p>
+
+        <h1 class="font-bold text-[#504E76] text-xs">
+
+            {{ $history->courier_name }}
+
+        </h1>
+
+        <p class="text-[10px] text-[#504E76]/50 mt-2">
+            Phone
+        </p>
+
+        <h1 class="font-bold text-[#504E76] text-xs">
+
+            {{ $history->courier_phone }}
+
+        </h1>
+
+        <p class="text-[10px] text-[#504E76]/50 mt-2">
+            Delivery Date
+        </p>
+
+        <h1 class="font-bold text-[#504E76] text-xs">
+
+            {{ $history->delivery_date }}
+
+        </h1>
+
+    </div>
+
+    @endif
+
+    <script>
+        function openModal(id) {
+            document
+                .getElementById(`modal-${id}`)
+                .classList.remove('hidden')
+        }
+
+        function closeModal(id) {
+            document
+                .getElementById(`modal-${id}`)
+                .classList.add('hidden')
+        }
+    </script>
 
 </body>
 

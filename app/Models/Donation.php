@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\DonationClaim;
 
 class Donation extends Model
 {
@@ -12,19 +13,22 @@ class Donation extends Model
     protected $fillable = [
 
         'supplier_id',
-        'community_id',
 
         'food_name',
+
         'quantity',
+        'remaining_quantity',
+
         'expired_date',
         'description',
         'category',
         'pickup_location',
         'pickup_time',
+
         'food_photo',
         'proof_photo',
-        'status'
 
+        'status'
     ];
 
     /*
@@ -38,8 +42,8 @@ class Donation extends Model
         return $this->belongsTo(Supplier::class);
     }
 
-    public function community()
+    public function claims()
     {
-        return $this->belongsTo(Community::class);
+        return $this->hasMany(DonationClaim::class);
     }
 }

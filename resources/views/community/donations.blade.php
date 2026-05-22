@@ -32,7 +32,6 @@ min-h-screen overflow-hidden">
         <main class="flex-1 overflow-y-auto p-6">
 
             <!-- HEADER -->
-            <!-- HEADER -->
             <div class="flex items-end justify-between mb-5">
 
                 <!-- LEFT -->
@@ -75,6 +74,33 @@ min-h-screen overflow-hidden">
                 </div>
 
             </div>
+
+            @if(session('error'))
+
+            <div class="mb-4 bg-red-100
+border border-red-300
+text-red-700 px-4 py-3
+rounded-2xl text-sm">
+
+                {{ session('error') }}
+
+            </div>
+
+            @endif
+
+
+            @if(session('success'))
+
+            <div class="mb-4 bg-green-100
+border border-green-300
+text-green-700 px-4 py-3
+rounded-2xl text-sm">
+
+                {{ session('success') }}
+
+            </div>
+
+            @endif
 
             <!-- GRID -->
             <div class="grid grid-cols-4 gap-3">
@@ -138,7 +164,7 @@ min-h-screen overflow-hidden">
                                 <p class="text-[14px]
                         font-black text-[#A3B565]">
 
-                                    {{ $donation->quantity }} portions
+                                    {{ $donation->remaining_quantity }} portions left
 
                                 </p>
 
@@ -163,15 +189,22 @@ min-h-screen overflow-hidden">
 
                         @csrf
 
+                        <!-- CLAIM QUANTITY -->
+                        <input
+                            type="number"
+                            name="claim_quantity"
+
+                            min="1"
+                            max="{{ $donation->remaining_quantity }}"
+
+                            placeholder="How many portions?"
+
+                            required
+
+                            class="w-full mb-3 px-4 py-3 rounded-2xl bg-white/70 border border-white/30 focus:outline-none focus:ring-2 focus:ring-[#504E76]/30 text-sm">
+
                         <button
-                            class="w-full
-                    bg-[#504E76]
-                    hover:bg-[#F1642E]
-                    transition-all duration-300
-                    text-white
-                    py-3
-                    rounded-2xl
-                    text-sm font-semibold">
+                            class="w-full bg-[#504E76] hover:bg-[#F1642E] transition-all duration-300 text-white py-3 rounded-2xl text-sm font-semibold">
 
                             Claim Pickup
 

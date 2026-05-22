@@ -5,6 +5,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\CommunityController;
 use App\Http\Controllers\AdminController;
+use Illuminate\Support\Facades\Auth;
 
 /*
 |--------------------------------------------------------------------------
@@ -26,7 +27,7 @@ Route::post('/logout', [AuthController::class, 'logout']);
 |--------------------------------------------------------------------------
 */
 
-Route::middleware(['role:supplier'])->group(function () {
+Route::middleware(['auth', 'role:supplier'])->group(function () {
 
     Route::get(
         '/dashboard-supplier',
@@ -64,8 +65,18 @@ Route::middleware(['role:supplier'])->group(function () {
     );
 
     Route::post(
+        '/settings/password',
+        [SupplierController::class, 'updatePassword']
+    );
+
+    Route::post(
         '/approve-donation/{id}',
         [SupplierController::class, 'approveDonation']
+    );
+
+    Route::post(
+        '/send-distribution/{id}',
+        [SupplierController::class, 'sendDistribution']
     );
 });
 
@@ -113,7 +124,7 @@ Route::middleware(['role:community'])->group(function () {
     );
 
     Route::post(
-        '/settings/update',
+        '/community/settings/update',
         [CommunityController::class, 'updateSettings']
     );
 });
