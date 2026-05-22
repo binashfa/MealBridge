@@ -19,10 +19,7 @@
 
 </head>
 
-<body class="bg-gradient-to-br
-from-[#FDF8E2]
-to-[#C4C3E3]
-min-h-screen overflow-hidden">
+<body class="bg-gradient-to-br from-[#FDF8E2] to-[#C4C3E3] min-h-screen overflow-hidden">
 
     <div class="flex h-screen">
 
@@ -38,10 +35,7 @@ min-h-screen overflow-hidden">
                 <div class="flex items-center gap-3">
 
                     <!-- ICON -->
-                    <div class="w-12 h-12 rounded-2xl
-        bg-[#504E76]
-        text-white
-        flex items-center justify-center shadow-lg">
+                    <div class="w-12 h-12 rounded-2xl bg-[#504E76] text-white flex items-center justify-center shadow-lg">
 
                         <i class='bx bx-food-menu text-2xl'></i>
 
@@ -77,10 +71,7 @@ min-h-screen overflow-hidden">
 
             @if(session('error'))
 
-            <div class="mb-4 bg-red-100
-border border-red-300
-text-red-700 px-4 py-3
-rounded-2xl text-sm">
+            <div class="mb-4 bg-red-100 border border-red-300 text-red-700 px-4 py-3 rounded-2xl text-sm">
 
                 {{ session('error') }}
 
@@ -91,10 +82,7 @@ rounded-2xl text-sm">
 
             @if(session('success'))
 
-            <div class="mb-4 bg-green-100
-border border-green-300
-text-green-700 px-4 py-3
-rounded-2xl text-sm">
+            <div class="mb-4 bg-green-100 border border-green-300 text-green-700 px-4 py-3 rounded-2xl text-sm">
 
                 {{ session('success') }}
 
@@ -108,11 +96,7 @@ rounded-2xl text-sm">
                 @foreach($donations as $donation)
 
                 <!-- CARD -->
-                <div class="bg-white/30
-        rounded-[28px]
-        p-3
-        shadow-sm
-        border border-gray-100">
+                <div class="bg-white/30 rounded-[28px] p-3 shadow-sm border border-gray-100">
 
                     <!-- TOP -->
                     <div class="flex gap-3">
@@ -121,8 +105,7 @@ rounded-2xl text-sm">
                         <img
                             src="{{ asset('storage/' . $donation->food_photo) }}"
 
-                            class="w-[72px] h-[72px]
-                    object-cover rounded-2xl shrink-0">
+                            class="w-[72px] h-[72px] object-cover rounded-2xl shrink-0">
 
                         <!-- CONTENT -->
                         <div class="flex-1 min-w-0">
@@ -132,20 +115,12 @@ rounded-2xl text-sm">
 
                                 <div class="min-w-0">
 
-                                    <h1 class="text-[15px]
-                            font-black
-                            text-[#2F2F2F]
-                            leading-tight truncate">
-
+                                    <h1 class="text-[15px] font-black text-[#2F2F2F]leading-tight truncate">
                                         {{ $donation->food_name }}
-
                                     </h1>
 
-                                    <p class="text-[10px]
-                            text-gray-400 mt-1 truncate">
-
+                                    <p class="text-[10px] text-gray-400 mt-1 truncate">
                                         {{ $donation->pickup_location }}
-
                                     </p>
 
                                 </div>
@@ -161,8 +136,7 @@ rounded-2xl text-sm">
 
                                 </p>
 
-                                <p class="text-[14px]
-                        font-black text-[#A3B565]">
+                                <p class="text-[14px] font-black text-[#A3B565]">
 
                                     {{ $donation->remaining_quantity }} portions left
 

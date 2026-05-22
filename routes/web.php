@@ -124,8 +124,13 @@ Route::middleware(['role:community'])->group(function () {
     );
 
     Route::post(
-        '/community/settings/update',
+        '/community-settings/update',
         [CommunityController::class, 'updateSettings']
+    );
+
+    Route::post(
+        '/community-settings/password',
+        [CommunityController::class, 'updatePassword']
     );
 });
 

@@ -175,7 +175,7 @@
                         </label>
 
                         <input
-                            type="date"
+                            type="datetime-local"
                             name="expired_date"
 
                             class="w-full p-3 rounded-2xl

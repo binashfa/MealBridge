@@ -9,6 +9,8 @@ use App\Models\Notification;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\DonationClaim;
+use Illuminate\Support\Facades\Hash;
+use App\Models\Community;
 
 class CommunityController extends Controller
 {
@@ -20,16 +22,142 @@ class CommunityController extends Controller
 
     public function dashboard()
     {
-
         $user = Auth::user();
 
         $community = $user->community;
 
-        $activePickups = 12;
+        /*
+    |--------------------------------------------------------------------------
+    | ACTIVE PICKUPS
+    |--------------------------------------------------------------------------
+    */
 
-        $distributedMeals = 540;
+        $activePickups = DonationClaim::where(
+            'community_id',
+            $community->id
+        )
 
-        $emergencyRequests = 5;
+            ->whereIn('status', [
+                'requested',
+                'distribution'
+            ])
+
+            ->count();
+
+        /*
+    |--------------------------------------------------------------------------
+    | MEALS DISTRIBUTED
+    |--------------------------------------------------------------------------
+    */
+
+        $distributedMeals = DonationClaim::where(
+            'community_id',
+            $community->id
+        )
+
+            ->where(
+                'status',
+                'completed'
+            )
+
+            ->sum('claimed_quantity');
+
+        /*
+    |--------------------------------------------------------------------------
+    | EMERGENCY REQUESTS
+    |--------------------------------------------------------------------------
+    */
+
+        $emergencyRequests = Donation::where(
+            'status',
+            'pending'
+        )
+
+            ->whereDate(
+                'expired_date',
+                '<=',
+                now()->addDay()
+            )
+
+            ->count();
+
+        /*
+    |--------------------------------------------------------------------------
+    | AVAILABLE DONATIONS
+    |--------------------------------------------------------------------------
+    */
+
+        $availableDonations = Donation::with('supplier')
+
+            ->where('status', 'pending')
+
+            ->where('remaining_quantity', '>', 0)
+
+            ->latest()
+
+            ->take(3)
+
+            ->get();
+
+        /*
+    |--------------------------------------------------------------------------
+    | ACTIVE DISTRIBUTION
+    |--------------------------------------------------------------------------
+    */
+
+        $activeDistribution = DonationClaim::with([
+            'donation.supplier'
+        ])
+
+            ->where(
+                'community_id',
+                $community->id
+            )
+
+            ->where(
+                'status',
+                'distribution'
+            )
+
+            ->latest()
+
+            ->first();
+
+        /*
+    |--------------------------------------------------------------------------
+    | COMPLETED DISTRIBUTIONS
+    |--------------------------------------------------------------------------
+    */
+
+        $completedDistributions = DonationClaim::where(
+            'community_id',
+            $community->id
+        )
+
+            ->where(
+                'status',
+                'completed'
+            )
+
+            ->count();
+
+        $totalClaimed = DonationClaim::where(
+            'community_id',
+            $community->id
+        )
+
+            ->whereIn('status', [
+                'requested',
+                'approved',
+                'distribution',
+                'completed'
+            ])
+
+            ->sum('claimed_quantity');
+
+        $remainingLimit = 30 - $totalClaimed;
+
+        $progress = ($totalClaimed / 30) * 100;
 
         return view(
             'community.dashboard',
@@ -39,7 +167,13 @@ class CommunityController extends Controller
                 'community',
                 'activePickups',
                 'distributedMeals',
-                'emergencyRequests'
+                'emergencyRequests',
+                'availableDonations',
+                'activeDistribution',
+                'completedDistributions',
+                'remainingLimit',
+                'totalClaimed',
+                'progress'
             )
         );
     }
@@ -382,12 +516,27 @@ class CommunityController extends Controller
     {
         $user = Auth::user();
 
+        $community = Community::firstOrCreate(
+
+            [
+                'user_id' => $user->id
+            ],
+
+            [
+                'nama_komunitas' => '',
+                'tujuan_komunitas' => '',
+                'alamat_komunitas' => ''
+            ]
+        );
+
         $notification = Notification::latest()->first();
 
         return view(
             'community.settings',
+
             compact(
                 'user',
+                'community',
                 'notification'
             )
         );
@@ -395,69 +544,164 @@ class CommunityController extends Controller
 
     public function updateSettings(Request $request)
     {
-        $user = User::find(Auth::id());
+        /** @var \App\Models\User $user */
+        $user = Auth::user();
 
-        $notification = Notification::latest()->first();
+        $community = Community::firstOrCreate(
 
-        /*
-    |--------------------------------------------------------------------------
-    | UPDATE PROFILE
-    |--------------------------------------------------------------------------
-    */
+            [
+                'user_id' => $user->id
+            ],
 
-        if (
-            $request->username ||
-            $request->email ||
-            $request->no_telp
-        ) {
-            $user->username = $request->username;
-
-            $user->email = $request->email;
-
-            $user->no_telp = $request->no_telp;
-
-            /*
-        |--------------------------------------------------------------------------
-        | PROFILE PHOTO
-        |--------------------------------------------------------------------------
-        */
-
-            if ($request->hasFile('profile_photo')) {
-                $photo = $request
-                    ->file('profile_photo')
-                    ->store(
-                        'profile_photos',
-                        'public'
-                    );
-
-                $user->profile_photo = $photo;
-            }
-
-            $user->save();
-        }
+            [
+                'nama_komunitas' => '',
+                'tujuan_komunitas' => '',
+                'alamat_komunitas' => ''
+            ]
+        );
 
         /*
     |--------------------------------------------------------------------------
-    | UPDATE NOTIFICATION
+    | VALIDATION
+    |--------------------------------------------------------------------------
+    */
+    
+    $request->validate([
+
+            'username' => 'required|max:255|unique:users,username,' . $user->id,
+
+            'email' => 'required|email|max:255|unique:users,email,' . $user->id,
+
+            'no_telp' => 'required|max:20',
+
+            'nama_komunitas' => 'required|max:255',
+
+            'tujuan_komunitas' => 'required|max:250',
+
+            'alamat_komunitas' => 'required',
+
+            'latitude' => 'nullable',
+
+            'longitude' => 'nullable',
+
+            'profile_photo' => 'nullable|image|mimes:jpg,jpeg,png|max:2048'
+        ]);
+
+        /*
+    |--------------------------------------------------------------------------
+    | UPLOAD PHOTO
     |--------------------------------------------------------------------------
     */
 
-        if ($request->notification_sound) {
-            $notification->update([
+        if ($request->hasFile('profile_photo')) {
 
-                'notification_enabled' =>
-                $request->has('notification_enabled'),
+            $photoName = time() . '.' .
+                $request->profile_photo->extension();
 
-                'notification_sound' =>
-                $request->notification_sound,
-
-            ]);
-        }
-
-        return redirect('/community-settings')
-            ->with(
-                'success',
-                'Settings updated successfully'
+            $request->profile_photo->move(
+                public_path('profile_photos'),
+                $photoName
             );
+
+            $user->profile_photo =
+                'profile_photos/' . $photoName;
+        }
+
+        /*
+    |--------------------------------------------------------------------------
+    | UPDATE USERS TABLE
+    |--------------------------------------------------------------------------
+    */
+
+        $dataUser = [
+
+            'username' => $request->username,
+
+            'email' => $request->email,
+
+            'no_telp' => $request->no_telp,
+        ];
+
+        if ($request->hasFile('profile_photo')) {
+
+            $photoName = time() . '.' .
+                $request->profile_photo->extension();
+
+            $request->profile_photo->move(
+                public_path('profile_photos'),
+                $photoName
+            );
+
+            $dataUser['profile_photo'] =
+                'profile_photos/' . $photoName;
+        }
+
+        $user->update($dataUser);
+
+        /*
+    |--------------------------------------------------------------------------
+    | UPDATE COMMUNITIES TABLE
+    |--------------------------------------------------------------------------
+    */
+
+        $community->update([
+
+            'nama_komunitas' =>
+            $request->nama_komunitas,
+
+            'tujuan_komunitas' =>
+            $request->tujuan_komunitas,
+
+            'alamat_komunitas' =>
+            $request->alamat_komunitas,
+
+            'latitude' =>
+            $request->latitude,
+
+            'longitude' =>
+            $request->longitude,
+        ]);
+
+        return back()->with(
+            'success',
+            'Profile updated successfully'
+        );
+    }
+
+    public function updatePassword(Request $request)
+    {
+        $request->validate([
+
+            'current_password' => 'required',
+
+            'new_password' => 'required|min:6|confirmed'
+        ]);
+
+        /** @var \App\Models\User $user */
+        $user = Auth::user();
+
+        // CHECK PASSWORD
+        if (!Hash::check(
+            $request->current_password,
+            $user->password
+        )) {
+
+            return back()->with(
+                'error',
+                'Current password is incorrect'
+            );
+        }
+
+        // UPDATE
+        $user->password = Hash::make(
+            $request->new_password
+        );
+
+        $user->save();
+
+        return back()->with(
+            'success',
+            'Password updated successfully'
+        );
     }
 }

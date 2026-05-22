@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
 use App\Models\Notification;
+use App\Models\Supplier;
 
 class SupplierController extends Controller
 {
@@ -232,12 +233,26 @@ class SupplierController extends Controller
     {
         $user = Auth::user();
 
+        $supplier = Supplier::firstOrCreate(
+
+            [
+                'user_id' => $user->id
+            ],
+
+            [
+                'nama_toko' => '',
+                'alamat_toko' => ''
+            ]
+        );
+
         $notification = Notification::latest()->first();
 
         return view(
             'supplier.settings',
+
             compact(
                 'user',
+                'supplier',
                 'notification'
             )
         );
@@ -245,24 +260,70 @@ class SupplierController extends Controller
 
     public function updateSettings(Request $request)
     {
-        $request->validate([
-
-            'username' => 'required',
-
-            'email' => 'required|email',
-
-            'no_telp' => 'required'
-        ]);
-
         /** @var \App\Models\User $user */
         $user = Auth::user();
 
-        // UPDATE DATA
-        $user->username = $request->username;
-        $user->email = $request->email;
-        $user->no_telp = $request->no_telp;
+        $supplier = Supplier::firstOrCreate(
 
-        // PHOTO
+            [
+                'user_id' => $user->id
+            ],
+
+            [
+                'nama_toko' => '',
+                'alamat_toko' => ''
+            ]
+        );
+
+        /*
+    |--------------------------------------------------------------------------
+    | VALIDATION
+    |--------------------------------------------------------------------------
+    */
+
+        $request->validate([
+
+            'username' =>
+            'required|max:255|unique:users,username,' . $user->id,
+
+            'email' =>
+            'required|email|max:255|unique:users,email,' . $user->id,
+
+            'no_telp' => 'required|max:20',
+
+            'nama_toko' => 'required|max:255',
+
+            'alamat_toko' => 'required',
+
+            'latitude' => 'nullable',
+
+            'longitude' => 'nullable',
+
+            'profile_photo' =>
+            'nullable|image|mimes:jpg,jpeg,png|max:2048'
+        ]);
+
+        /*
+    |--------------------------------------------------------------------------
+    | USER DATA
+    |--------------------------------------------------------------------------
+    */
+
+        $dataUser = [
+
+            'username' => $request->username,
+
+            'email' => $request->email,
+
+            'no_telp' => $request->no_telp,
+        ];
+
+        /*
+    |--------------------------------------------------------------------------
+    | PHOTO
+    |--------------------------------------------------------------------------
+    */
+
         if ($request->hasFile('profile_photo')) {
 
             $photoName = time() . '.' .
@@ -273,11 +334,38 @@ class SupplierController extends Controller
                 $photoName
             );
 
-            $user->profile_photo =
+            $dataUser['profile_photo'] =
                 'profile_photos/' . $photoName;
         }
 
-        $user->save();
+        /*
+    |--------------------------------------------------------------------------
+    | UPDATE USERS
+    |--------------------------------------------------------------------------
+    */
+
+        $user->update($dataUser);
+
+        /*
+    |--------------------------------------------------------------------------
+    | UPDATE SUPPLIERS
+    |--------------------------------------------------------------------------
+    */
+
+        $supplier->update([
+
+            'nama_toko' =>
+            $request->nama_toko,
+
+            'alamat_toko' =>
+            $request->alamat_toko,
+
+            'latitude' =>
+            $request->latitude,
+
+            'longitude' =>
+            $request->longitude,
+        ]);
 
         return back()->with(
             'success',

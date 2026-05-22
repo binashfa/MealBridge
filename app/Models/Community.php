@@ -12,10 +12,16 @@ class Community extends Model
     protected $fillable = [
 
         'user_id',
-        'nama_komunitas',
-        'tujuan_komunitas',
-        'alamat_komunitas'
 
+        'nama_komunitas',
+
+        'tujuan_komunitas',
+
+        'alamat_komunitas',
+
+        'latitude',
+
+        'longitude'
     ];
 
     /*

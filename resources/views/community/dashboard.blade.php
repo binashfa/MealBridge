@@ -14,6 +14,8 @@
 
     <!-- BOXICONS -->
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+
+    <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/uicons-solid-rounded/css/uicons-solid-rounded.css'>
 </head>
 
 <body class="bg-gradient-to-br from-[#FDF8E2] to-[#C4C3E3] min-h-screen overflow-hidden">
@@ -43,9 +45,7 @@
                 </div>
 
                 <!-- PROFILE -->
-                <div class="bg-white/30 backdrop-blur-2xl
-                rounded-2xl px-5 py-3
-                flex items-center gap-4 shadow-xl">
+                <div class="bg-white/30 backdrop-blur-2xl rounded-2xl px-5 py-3 flex items-center gap-4 shadow-xl">
 
                     <div>
 
@@ -61,42 +61,45 @@
 
                     <img
                         src="{{ Auth::user()->profile_photo
-                        ? asset('storage/' . Auth::user()->profile_photo)
-                        : 'https://ui-avatars.com/api/?name=' . Auth::user()->username }}"
+                        ? asset(Auth::user()->profile_photo)
+                        : 'https://ui-avatars.com/api/?name=' . urlencode(Auth::user()->username) }}"
 
-                        class="w-12 h-12 rounded-full
-                        object-cover border-2 border-white shadow-lg">
+                        onerror="this.src='https://ui-avatars.com/api/?name={{ urlencode(Auth::user()->username) }}'"
+
+                        class="w-12 h-12 rounded-full object-cover border-2 border-white shadow-lg">
 
                 </div>
 
             </div>
 
             <!-- STATISTICS -->
-            <div class="grid grid-cols-3 gap-4 mb-6">
+            <div class="grid grid-cols-4 gap-5 mb-8">
 
                 <!-- ACTIVE PICKUP -->
-                <div class="bg-white/30 backdrop-blur-2xl
-                rounded-3xl p-5 shadow-xl">
+                <div class="bg-white/30 backdrop-blur-2xl rounded-[30px] p-6 shadow-xl border border-white/20">
 
-                    <div class="flex items-center justify-between">
+                    <div class="flex items-start justify-between">
 
                         <div>
 
-                            <p class="text-sm text-[#504E76]/70">
+                            <p class="text-sm text-[#504E76]/60 font-medium">
+
                                 Active Pickups
+
                             </p>
 
-                            <h1 class="text-4xl font-black text-[#504E76] mt-1">
-                                12
+                            <h1 class="text-5xl font-black text-[#504E76] mt-3">
+
+                                {{ $activePickups }}
+
                             </h1>
 
                         </div>
 
-                        <div class="w-14 h-14 rounded-2xl
-                        bg-[#504E76]
-                        text-white flex items-center justify-center">
+                        <!-- ICON -->
+                        <div class="w-16 h-16 rounded-2xl bg-[#504E76] text-white flex items-center justify-center shadow-lg">
 
-                            <i class='bx bx-package text-2xl'></i>
+                            <i class="fi fi-sr-box-open-full text-2xl"></i>
 
                         </div>
 
@@ -104,29 +107,31 @@
 
                 </div>
 
-                <!-- MEALS -->
-                <div class="bg-white/30 backdrop-blur-2xl
-                rounded-3xl p-5 shadow-xl">
+                <!-- MEALS DISTRIBUTED -->
+                <div class="bg-white/30 backdrop-blur-2xl rounded-[30px] p-6 shadow-xl border border-white/20">
 
-                    <div class="flex items-center justify-between">
+                    <div class="flex items-start justify-between">
 
                         <div>
 
-                            <p class="text-sm text-[#504E76]/70">
+                            <p class="text-sm text-[#504E76]/60 font-medium">
+
                                 Meals Distributed
+
                             </p>
 
-                            <h1 class="text-4xl font-black text-[#504E76] mt-1">
-                                540
+                            <h1 class="text-5xl font-black text-[#504E76] mt-3">
+
+                                {{ $distributedMeals }}
+
                             </h1>
 
                         </div>
 
-                        <div class="w-14 h-14 rounded-2xl
-                        bg-[#A3B565]
-                        text-white flex items-center justify-center">
+                        <!-- ICON -->
+                        <div class="w-16 h-16 rounded-2xl bg-[#A3B565] text-white flex items-center justify-center shadow-lg">
 
-                            <i class='bx bx-dish text-2xl'></i>
+                            <i class="fi fi-sr-utensils text-2xl"></i>
 
                         </div>
 
@@ -135,30 +140,102 @@
                 </div>
 
                 <!-- EMERGENCY -->
-                <div class="bg-white/30 backdrop-blur-2xl
-                rounded-3xl p-5 shadow-xl">
+                <div class="bg-white/30 backdrop-blur-2xl rounded-[30px] p-6 shadow-xl border border-white/20">
 
-                    <div class="flex items-center justify-between">
+                    <div class="flex items-start justify-between">
 
                         <div>
 
-                            <p class="text-sm text-[#504E76]/70">
+                            <p class="text-sm text-[#504E76]/60 font-medium">
+
                                 Emergency Requests
+
                             </p>
 
-                            <h1 class="text-4xl font-black text-[#504E76] mt-1">
-                                5
+                            <h1 class="text-5xl font-black text-[#504E76] mt-3">
+
+                                {{ $emergencyRequests }}
+
                             </h1>
 
                         </div>
 
-                        <div class="w-14 h-14 rounded-2xl
-                        bg-[#F1642E]
-                        text-white flex items-center justify-center">
+                        <!-- ICON -->
+                        <div class="w-16 h-16 rounded-2xl bg-[#F1642E] text-white flex items-center justify-center shadow-lg">
 
-                            <i class='bx bx-error text-2xl'></i>
+                            <i class="fi fi-sr-triangle-warning text-2xl"></i>
 
                         </div>
+
+                    </div>
+
+                </div>
+
+                <!-- CLAIM LIMIT -->
+                <div class="bg-white/30 backdrop-blur-2xl rounded-[30px] p-6 shadow-xl border border-white/20">
+
+                    <!-- TOP -->
+                    <div class="flex items-start justify-between">
+
+                        <div>
+
+                            <p class="text-sm text-[#504E76]/60 font-medium">
+
+                                Daily Claim Limit
+
+                            </p>
+
+                            <h1 class="text-4xl font-black text-[#504E76] mt-2">
+
+                                {{ $remainingLimit }}
+
+                                <span class="text-xl font-bold text-[#504E76]/50">
+                                    / 30
+                                </span>
+
+                            </h1>
+
+                        </div>
+
+                        <!-- ICON -->
+                        <div class="w-16 h-16 rounded-2xl bg-[#F1642E] text-white flex items-center justify-center shadow-lg">
+
+                            <i class="fi fi-sr-chart-pie-alt text-2xl"></i>
+
+                        </div>
+
+                    </div>
+
+                    <!-- TEXT -->
+                    <p class="text-sm text-[#504E76]/60 mt-5 mb-3">
+
+                        {{ $totalClaimed }} portions already claimed
+
+                    </p>
+
+                    <!-- PROGRESS -->
+                    <div class="w-full h-3 bg-white/40 rounded-full mt-5 overflow-hidden">
+                        @if($progress >= 100)
+
+                        <div class="h-full w-full bg-[#F1642E] rounded-full"></div>
+
+                        @elseif($progress >= 70)
+
+                        <div class="h-full w-3/4 bg-[#F1642E] rounded-full"></div>
+
+                        @elseif($progress >= 50)
+
+                        <div class="h-full w-1/2 bg-[#F1642E] rounded-full"></div>
+
+                        @elseif($progress >= 25)
+
+                        <div class="h-full w-1/4 bg-[#F1642E] rounded-full"></div>
+
+                        @else
+
+                        <div class="h-full w-[10%] bg-[#F1642E] rounded-full"></div>
+
+                        @endif
 
                     </div>
 
@@ -170,9 +247,7 @@
             <div class="grid grid-cols-3 gap-5 mb-5">
 
                 <!-- AVAILABLE DONATIONS -->
-                <div class="col-span-2 bg-white/30
-                backdrop-blur-2xl rounded-3xl
-                p-6 shadow-xl">
+                <div class="col-span-2 bg-white/30 backdrop-blur-2xl rounded-3xl p-6 shadow-xl">
 
                     <div class="flex items-center justify-between mb-5">
 
@@ -187,77 +262,81 @@
                     <div class="space-y-4">
 
                         <!-- CARD -->
-                        <div class="bg-white/40 rounded-2xl p-4">
+                        @foreach($availableDonations as $donation)
+
+                        <div class=" bg-white/40 rounded-2xl p-4
+
+                        @if(
+                            \Carbon\Carbon::parse($donation->expired_date)->isToday()
+                        )
+                        border-2 border-[#F1642E]/30
+                        @endif
+                        ">
 
                             <div class="flex items-center justify-between">
 
                                 <div>
 
-                                    <h1 class="font-bold text-[#504E76]">
-                                        🍞 Bread Package
+                                    <h1 class=" font-bold
+
+                                    @if(
+                                        \Carbon\Carbon::parse($donation->expired_date)->isToday()
+                                    )
+                                    text-[#F1642E]
+                                    @else
+                                    text-[#504E76]
+                                    @endif
+                                    ">
+
+                                        {{ $donation->food_name }}
+
                                     </h1>
 
                                     <p class="text-sm text-[#504E76]/60 mt-1">
-                                        24 portions • BSD • 2 hours left
+
+                                        {{ $donation->remaining_quantity }}
+                                        portions •
+
+                                        {{ $donation->pickup_location }}
+
                                     </p>
 
                                 </div>
 
-                                <button
-                                    class="bg-[#504E76]
+                                <a
+                                    href="/available-donations"
+
+                                    class="
+                                    @if(
+                                        \Carbon\Carbon::parse($donation->expired_date)->isToday()
+                                    )
+                                    bg-[#F1642E]
+                                    hover:bg-[#504E76]
+                                    @else
+                                    bg-[#504E76]
                                     hover:bg-[#F1642E]
-                                    transition-all duration-300
-                                    text-white px-4 py-2 rounded-xl text-sm font-semibold">
+                                    @endif
+
+                                    transition-all duration-300 text-white px-4 py-2 rounded-xl text-sm font-semibold">
 
                                     Claim Pickup
 
-                                </button>
+                                </a>
 
                             </div>
 
                         </div>
 
-                        <!-- CARD -->
-                        <div class="bg-white/40 rounded-2xl p-4 border-2 border-[#F1642E]/30">
-
-                            <div class="flex items-center justify-between">
-
-                                <div>
-
-                                    <h1 class="font-bold text-[#F1642E]">
-                                        ⚠️ Rice Box Emergency
-                                    </h1>
-
-                                    <p class="text-sm text-[#504E76]/60 mt-1">
-                                        40 portions • Gading Serpong • 1 hour left
-                                    </p>
-
-                                </div>
-
-                                <button
-                                    class="bg-[#F1642E]
-                                    hover:bg-[#504E76]
-                                    transition-all duration-300
-                                    text-white px-4 py-2 rounded-xl text-sm font-semibold">
-
-                                    Urgent Pickup
-
-                                </button>
-
-                            </div>
-
-                        </div>
+                        @endforeach
 
                     </div>
 
                 </div>
 
                 <!-- QUICK ACTION -->
-                <div class="bg-white/30 backdrop-blur-2xl
-                rounded-3xl p-6 shadow-xl">
+                <div class="bg-white/30 backdrop-blur-2xl rounded-3xl p-6 shadow-xl">
 
-                    <h1 class="text-2xl font-black
-                    text-[#504E76] mb-5">
+                    <h1 class="text-2xl font-black text-[#504E76] mb-5">
 
                         Quick Actions
 
@@ -265,49 +344,32 @@
 
                     <div class="space-y-4">
 
-                        <a href="/distribution-map"
-                            class="bg-[#504E76]
-                            hover:bg-[#F1642E]
-                            transition-all duration-300
-                            text-white rounded-2xl
-                            p-4 flex items-center gap-3">
+                        <!-- AVAILABLE DONATIONS -->
+                        <a href="/community-dashboard"
 
-                            <i class='bx bx-map text-2xl'></i>
+                            class="bg-[#504E76] hover:bg-[#F1642E] transition-all duration-300 text-white rounded-2xl p-4 flex items-center gap-3">
+
+                            <i class='bx bx-food-menu text-2xl'></i>
 
                             <span class="font-semibold">
-                                Open Distribution Map
+
+                                Available Donations
+
                             </span>
 
                         </a>
 
-                        <a href="/active-distribution"
-                            class="bg-white/40
-                            hover:bg-white/60
-                            transition-all duration-300
-                            rounded-2xl p-4
-                            flex items-center gap-3
-                            text-[#504E76]">
+                        <!-- DISTRIBUTION HISTORY -->
+                        <a href="/distribution-history"
 
-                            <i class='bx bx-package text-2xl'></i>
+                            class="bg-white/40 hover:bg-white/60 transition-all duration-300 rounded-2xl p-4 flex items-center gap-3 text-[#504E76]">
+
+                            <i class='bx bx-history text-2xl'></i>
 
                             <span class="font-semibold">
-                                Active Distribution
-                            </span>
 
-                        </a>
+                                Distribution History
 
-                        <a href="/upload-proof"
-                            class="bg-white/40
-                            hover:bg-white/60
-                            transition-all duration-300
-                            rounded-2xl p-4
-                            flex items-center gap-3
-                            text-[#504E76]">
-
-                            <i class='bx bx-upload text-2xl'></i>
-
-                            <span class="font-semibold">
-                                Upload Proof
                             </span>
 
                         </a>
@@ -319,8 +381,7 @@
             </div>
 
             <!-- ACTIVE DISTRIBUTION -->
-            <div class="bg-white/30 backdrop-blur-2xl
-            rounded-3xl p-6 shadow-xl mb-5">
+            <div class="bg-white/30 backdrop-blur-2xl rounded-3xl p-6 shadow-xl mb-5">
 
                 <div class="flex items-center justify-between mb-6">
 
@@ -332,6 +393,8 @@
 
                 </div>
 
+                @if($activeDistribution)
+
                 <div class="bg-white/40 rounded-2xl p-5">
 
                     <p class="text-[#504E76]/70 text-sm mb-2">
@@ -339,20 +402,22 @@
                     </p>
 
                     <h1 class="text-xl font-bold text-[#504E76] mb-4">
-                        Bakery RasaManis
+
+                        {{ $activeDistribution->donation->supplier->nama_toko }}
+
                     </h1>
 
                     <p class="text-[#504E76]/70 text-sm mb-2">
-                        Destination
+                        Courier
                     </p>
 
                     <h1 class="text-xl font-bold text-[#504E76] mb-4">
-                        Panti Asuhan Harapan
+
+                        {{ $activeDistribution->courier_name }}
+
                     </h1>
 
-                    <div class="inline-flex items-center gap-2
-                    bg-blue-100 text-blue-700
-                    px-4 py-2 rounded-xl font-semibold">
+                    <div class=" inline-flex items-center gap-2 bg-blue-100 text-blue-700 px-4 py-2 rounded-xl font-semibold">
 
                         <i class='bx bx-car'></i>
 
@@ -362,109 +427,19 @@
 
                 </div>
 
-            </div>
+                @else
 
-            <!-- TIMELINE -->
-            <div class="bg-white/30 backdrop-blur-2xl
-            rounded-3xl p-6 shadow-xl mb-5">
+                <div class="bg-white/40 rounded-2xl p-5">
 
-                <div class="flex items-center justify-between mb-6">
+                    <p class="text-[#504E76]/70">
 
-                    <h1 class="text-2xl font-black text-[#504E76]">
-                        Distribution Timeline
-                    </h1>
+                        No active distribution
 
-                    <i class='bx bx-time text-3xl text-[#504E76]'></i>
-
-                </div>
-
-                <div class="space-y-4">
-
-                    <div class="flex items-center gap-4">
-
-                        <div class="w-4 h-4 rounded-full bg-[#504E76]"></div>
-
-                        <p class="font-semibold text-[#504E76]">
-                            13:00 Pickup Claimed
-                        </p>
-
-                    </div>
-
-                    <div class="flex items-center gap-4">
-
-                        <div class="w-4 h-4 rounded-full bg-[#F8C15C]"></div>
-
-                        <p class="font-semibold text-[#504E76]">
-                            13:30 Food Collected
-                        </p>
-
-                    </div>
-
-                    <div class="flex items-center gap-4">
-
-                        <div class="w-4 h-4 rounded-full bg-[#4DA8FF]"></div>
-
-                        <p class="font-semibold text-[#504E76]">
-                            14:00 On Distribution
-                        </p>
-
-                    </div>
-
-                    <div class="flex items-center gap-4">
-
-                        <div class="w-4 h-4 rounded-full bg-[#A3B565]"></div>
-
-                        <p class="font-semibold text-[#504E76]">
-                            15:00 Delivered
-                        </p>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-            <!-- IMPACT -->
-            <div class="grid grid-cols-3 gap-5">
-
-                <div class="bg-white/30 backdrop-blur-2xl
-                rounded-3xl p-6 shadow-xl">
-
-                    <h1 class="text-5xl font-black text-[#504E76]">
-                        540
-                    </h1>
-
-                    <p class="mt-2 text-[#504E76]/70">
-                        🍱 Meals Distributed
                     </p>
 
                 </div>
 
-                <div class="bg-white/30 backdrop-blur-2xl
-                rounded-3xl p-6 shadow-xl">
-
-                    <h1 class="text-5xl font-black text-[#504E76]">
-                        23
-                    </h1>
-
-                    <p class="mt-2 text-[#504E76]/70">
-                        ❤️ Communities Helped
-                    </p>
-
-                </div>
-
-                <div class="bg-white/30 backdrop-blur-2xl
-                rounded-3xl p-6 shadow-xl">
-
-                    <h1 class="text-5xl font-black text-[#504E76]">
-                        180kg
-                    </h1>
-
-                    <p class="mt-2 text-[#504E76]/70">
-                        🌱 Food Waste Reduced
-                    </p>
-
-                </div>
+                @endif
 
             </div>
 

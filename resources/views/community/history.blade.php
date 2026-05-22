@@ -30,10 +30,7 @@
                 <!-- LEFT -->
                 <div class="flex items-center gap-3">
 
-                    <div class="w-12 h-12 rounded-2xl
-                    bg-[#504E76]
-                    text-white
-                    flex items-center justify-center shadow-lg">
+                    <div class="w-12 h-12 rounded-2xl bg-[#504E76] text-white flex items-center justify-center shadow-lg">
 
                         <i class='bx bx-history text-2xl'></i>
 
@@ -71,18 +68,12 @@
 
                 @foreach($histories as $history)
 
-                <div class="bg-white/30
-                    backdrop-blur-2xl
-                    border border-white/20
-                    rounded-3xl
-                    p-3
-                    shadow-xl">
+                <div class="bg-white/30 backdrop-blur-2xl border border-white/20 rounded-3xl p-3 shadow-xl">
 
                     <!-- IMAGE -->
                     <img
                         src="{{ asset($history->donation->food_photo) }}"
-                        class="w-full h-[120px]
-                        object-cover rounded-2xl">
+                        class="w-full h-[120px] object-cover rounded-2xl">
 
                     <!-- TOP -->
                     <div class="mt-3">
@@ -96,9 +87,7 @@
                             </h1>
 
                             <!-- STATUS -->
-                            <div class="
-                            px-2 py-1 rounded-xl
-                            text-[10px] font-semibold whitespace-nowrap
+                            <div class=" px-2 py-1 rounded-xl text-[10px] font-semibold whitespace-nowrap
 
                             @if($history->status == 'requested')
                                 bg-yellow-100 text-yellow-700
@@ -217,29 +206,18 @@
 
                         </div>
 
-                        
-
                     </div>
 
                     <!-- BUTTONS -->
                     <div class="flex gap-2 mt-4">
 
                         <!-- MAP -->
-                        <a
-                            href="https://www.google.com/maps/search/?api=1&query={{ urlencode($history->donation->pickup_location) }}"
-
+                        <a href="https://www.google.com/maps/search/?api=1&query={{ urlencode($history->donation->pickup_location) }}"
                             target="_blank"
-
                             class="
                             {{ $history->status == 'distribution' ? 'w-1/2' : 'w-full' }}
 
-                            bg-[#504E76]
-                            hover:bg-[#F1642E]
-                            transition-all duration-300
-                            text-white
-                            py-2 rounded-2xl
-                            flex items-center justify-center gap-1
-                            text-xs font-semibold">
+                            bg-[#504E76] hover:bg-[#F1642E] transition-all duration-300 text-white py-2 rounded-2xl flex items-center justify-center gap-1 text-xs font-semibold">
 
                             <i class='bx bx-map'></i>
 
@@ -269,20 +247,15 @@
 
             </div>
 
-
             <!-- MODALS -->
             @foreach($histories as $history)
 
             <div
                 id="modal-{{ $history->id }}"
 
-                class="hidden fixed inset-0
-            bg-black/40 backdrop-blur-sm
-            z-50 flex items-center justify-center px-4">
+                class="hidden fixed inset-0 bg-black/40 backdrop-blur-sm z-50 flex items-center justify-center px-4">
 
-                <div class="bg-white rounded-3xl
-            p-6 w-full max-w-[400px]
-            shadow-2xl">
+                <div class="bg-white rounded-3xl p-6 w-full max-w-[400px] shadow-2xl">
 
                     <!-- HEADER -->
                     <div class="flex items-center justify-between mb-5">
@@ -295,9 +268,7 @@
 
                         <button
                             type="button"
-
                             onclick="closeModal('{{ $history->id }}')"
-
                             class="text-3xl text-[#504E76] leading-none">
 
                             &times;
@@ -381,20 +352,16 @@
                                 name="proof_photo"
                                 required
 
-                                class="w-full bg-white/60
-                            border border-white/30
-                            rounded-2xl
-                            px-4 py-3
-                            text-sm text-[#504E76]
+                                class="w-full bg-white/60 border border-white/30 rounded-2xl px-4 py-3 text-sm text-[#504E76]
 
-                            file:mr-3
-                            file:py-2
-                            file:px-3
-                            file:rounded-xl
-                            file:border-0
-                            file:bg-[#504E76]
-                            file:text-white
-                            file:cursor-pointer">
+                                file:mr-3
+                                file:py-2
+                                file:px-3
+                                file:rounded-xl
+                                file:border-0
+                                file:bg-[#504E76]
+                                file:text-white
+                                file:cursor-pointer">
                         </div>
 
                         <!-- ACTION -->
@@ -406,11 +373,7 @@
 
                                 onclick="closeModal('{{ $history->id }}')"
 
-                                class="flex-1 bg-gray-200
-                            hover:bg-gray-300
-                            transition-all duration-300
-                            py-3 rounded-2xl
-                            font-semibold text-[#504E76] text-sm">
+                                class="flex-1 bg-gray-200 hover:bg-gray-300 transition-all duration-300 py-3 rounded-2xl font-semibold text-[#504E76] text-sm">
 
                                 Cancel
 
@@ -420,12 +383,7 @@
                             <button
                                 type="submit"
 
-                                class="flex-1 bg-[#504E76]
-                            hover:bg-[#F1642E]
-                            transition-all duration-300
-                            text-white py-3
-                            rounded-2xl
-                            font-semibold text-sm">
+                                class="flex-1 bg-[#504E76] hover:bg-[#F1642E] transition-all duration-300 text-white py-3 rounded-2xl font-semibold text-sm">
 
                                 Confirm
 
@@ -446,13 +404,9 @@
             <div
                 id="detail-modal-{{ $history->id }}"
 
-                class="hidden fixed inset-0
-    bg-black/40 backdrop-blur-sm
-    z-50 flex items-center justify-center px-4">
+                class="hidden fixed inset-0 bg-black/40 backdrop-blur-sm z-50 flex items-center justify-center px-4">
 
-                <div class="bg-white rounded-3xl
-    p-6 w-full max-w-[420px]
-    shadow-2xl">
+                <div class="bg-white rounded-3xl p-6 w-full max-w-[420px] shadow-2xl">
 
                     <!-- HEADER -->
                     <div class="flex items-center justify-between mb-5">
@@ -532,8 +486,7 @@
                         <img
                             src="{{ asset($history->supplier_proof_photo) }}"
 
-                            class="w-full h-[180px]
-                object-cover rounded-2xl">
+                            class="w-full h-[180px] object-cover rounded-2xl">
 
                         @endif
 
@@ -547,11 +500,7 @@
 
                             onclick="closeDetailModal('{{ $history->id }}')"
 
-                            class="flex-1 bg-gray-200
-                hover:bg-gray-300
-                transition-all duration-300
-                py-3 rounded-2xl
-                font-semibold text-[#504E76] text-sm">
+                            class="flex-1 bg-gray-200 hover:bg-gray-300 transition-all duration-300 py-3 rounded-2xl font-semibold text-[#504E76] text-sm">
 
                             Close
 
@@ -560,16 +509,11 @@
                         <!-- RECEIVE -->
                         <button
                             onclick="
-                    closeDetailModal('{{ $history->id }}');
-                    openModal('{{ $history->id }}');
-                "
+                                closeDetailModal('{{ $history->id }}');
+                                openModal('{{ $history->id }}');
+                            "
 
-                            class="flex-1 bg-[#504E76]
-                hover:bg-[#F1642E]
-                transition-all duration-300
-                text-white py-3
-                rounded-2xl
-                font-semibold text-sm">
+                            class="flex-1 bg-[#504E76] hover:bg-[#F1642E] transition-all duration-300 text-white py-3 rounded-2xl font-semibold text-sm">
 
                             Receive
 
@@ -582,7 +526,6 @@
             </div>
 
             @endforeach
-
 
         </main>
 

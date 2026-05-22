@@ -12,9 +12,14 @@ class Supplier extends Model
     protected $fillable = [
 
         'user_id',
-        'nama_toko',
-        'alamat_toko'
 
+        'nama_toko',
+
+        'alamat_toko',
+
+        'latitude',
+
+        'longitude'
     ];
 
     /*

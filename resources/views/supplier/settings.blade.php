@@ -13,6 +13,10 @@
 
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css'
         rel='stylesheet'>
+
+    <link
+        rel="stylesheet"
+        href="https://cdn-uicons.flaticon.com/uicons-solid-rounded/css/uicons-solid-rounded.css">
 </head>
 
 <body class="bg-gradient-to-br from-[#FDF8E2]
@@ -257,6 +261,110 @@ text-red-700 p-3 rounded-2xl text-sm">
                     text-[#504E76] font-semibold">
                         </div>
 
+                        <!-- STORE NAME -->
+                        <div>
+
+                            <label class="block text-sm font-semibold text-[#504E76] mb-2">
+
+                                Store Name
+
+                            </label>
+
+                            <input
+                                type="text"
+                                name="nama_toko"
+                                value="{{ $supplier->nama_toko }}"
+
+                                class="w-full h-[60px]
+        px-5 rounded-2xl
+        bg-white/70
+        border border-white/30
+        focus:outline-none
+        focus:ring-2
+        focus:ring-[#504E76]/30">
+
+                        </div>
+
+                        <!-- STORE ADDRESS -->
+                        <div>
+
+                            <label class="block text-sm font-semibold text-[#504E76] mb-2">
+
+                                Store Address
+
+                            </label>
+
+                            <!-- INPUT + BUTTON -->
+                            <div class="flex gap-3">
+
+                                <!-- ADDRESS -->
+                                <input
+                                    type="text"
+
+                                    id="alamat_toko"
+
+                                    name="alamat_toko"
+
+                                    value="{{ $supplier->alamat_toko }}"
+
+                                    placeholder="Click detect location"
+
+                                    class="flex-1 h-[60px]
+            px-5 rounded-2xl
+            bg-white/70
+            border border-white/30
+            focus:outline-none
+            focus:ring-2
+            focus:ring-[#504E76]/30">
+
+                                <!-- BUTTON -->
+                                <button
+                                    type="button"
+
+                                    id="locationButton"
+
+                                    onclick="getLocation()"
+
+                                    class="h-[60px]
+            px-6 rounded-2xl
+            bg-[#504E76]
+            hover:bg-[#F1642E]
+            transition-all duration-300
+            text-white
+            flex items-center gap-2
+            whitespace-nowrap">
+
+                                    <i class="fi fi-sr-marker"></i>
+
+                                    Detect
+
+                                </button>
+
+                            </div>
+
+                            <!-- LOADING -->
+                            <p
+                                id="locationLoading"
+
+                                class="hidden text-sm text-[#504E76]/60 mt-3">
+
+                            </p>
+
+                            <!-- LAT LONG -->
+                            <input
+                                type="hidden"
+                                id="latitude"
+                                name="latitude"
+                                value="{{ $supplier->latitude }}">
+
+                            <input
+                                type="hidden"
+                                id="longitude"
+                                name="longitude"
+                                value="{{ $supplier->longitude }}">
+
+                        </div>
+
                     </div>
 
                     <!-- BUTTON -->
@@ -429,6 +537,107 @@ text-red-700 p-3 rounded-2xl text-sm">
         </main>
 
     </div>
+
+    <script>
+        async function getLocation() {
+
+            const addressInput =
+                document.getElementById('alamat_toko');
+
+            const loadingText =
+                document.getElementById('locationLoading');
+
+            const button =
+                document.getElementById('locationButton');
+
+            /*
+            |--------------------------------------------------------------------------
+            | LOADING
+            |--------------------------------------------------------------------------
+            */
+
+            loadingText.classList.remove('hidden');
+
+            loadingText.innerText =
+                'Checking your current address...';
+
+            addressInput.disabled = true;
+
+            button.disabled = true;
+
+            button.classList.add(
+                'opacity-60',
+                'cursor-not-allowed'
+            );
+
+            /*
+            |--------------------------------------------------------------------------
+            | GEOLOCATION
+            |--------------------------------------------------------------------------
+            */
+
+            if (navigator.geolocation) {
+
+                navigator.geolocation.getCurrentPosition(
+
+                    async function(position) {
+
+                        let lat =
+                            position.coords.latitude;
+
+                        let lng =
+                            position.coords.longitude;
+
+                        document.getElementById(
+                            'latitude'
+                        ).value = lat;
+
+                        document.getElementById(
+                            'longitude'
+                        ).value = lng;
+
+                        /*
+                        |--------------------------------------------------------------------------
+                        | REVERSE GEOCODING
+                        |--------------------------------------------------------------------------
+                        */
+
+                        let response = await fetch(
+                            `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`
+                        );
+
+                        let data =
+                            await response.json();
+
+                        if (data.display_name) {
+
+                            addressInput.value =
+                                data.display_name;
+                        }
+
+                        /*
+                        |--------------------------------------------------------------------------
+                        | RESET
+                        |--------------------------------------------------------------------------
+                        */
+
+                        loadingText.classList.add(
+                            'hidden'
+                        );
+
+                        addressInput.disabled = false;
+
+                        button.disabled = false;
+
+                        button.classList.remove(
+                            'opacity-60',
+                            'cursor-not-allowed'
+                        );
+                    }
+                );
+            }
+        }
+    </script>
 
 </body>
 
