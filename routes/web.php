@@ -13,7 +13,17 @@ use Illuminate\Support\Facades\Auth;
 |--------------------------------------------------------------------------
 */
 
-Route::get('/', [AuthController::class, 'index']);
+Route::get('/', function () {
+    return view('landing');
+});
+
+Route::get('/login', function () {
+    return view('auth');
+});
+
+Route::get('/register', function () {
+    return view('auth');
+});
 
 Route::post('/login', [AuthController::class, 'login']);
 

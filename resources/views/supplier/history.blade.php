@@ -3,53 +3,221 @@
 
 <head>
     <meta charset="UTF-8">
-
-    <meta name="viewport"
-        content="width=device-width, initial-scale=1.0">
-
-    <title>Donation History</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Donation History - MealBridge</title>
 
     <script src="https://cdn.tailwindcss.com"></script>
 
-    <link
-        href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css'
-        rel='stylesheet'>
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+
+    <style>
+        * {
+            font-family: 'Poppins', sans-serif;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            overflow-x: hidden;
+            background:
+                linear-gradient(135deg,
+                    #FDF8E2 0%,
+                    #ECEAF8 55%,
+                    #D6D4F4 100%);
+        }
+
+        .glass {
+            background: rgba(255, 255, 255, 0.40);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+            border: 1px solid rgba(255, 255, 255, 0.35);
+        }
+
+        .soft-shadow {
+            box-shadow:
+                0 10px 30px rgba(80, 78, 118, 0.10),
+                0 4px 10px rgba(0, 0, 0, 0.04);
+        }
+
+        .smooth-card {
+            transition: all .35s ease;
+        }
+
+        .smooth-card:hover {
+            transform: translateY(-6px);
+            box-shadow:
+                0 18px 40px rgba(80, 78, 118, 0.16);
+        }
+
+        .btn-hover {
+            transition: all .3s ease;
+        }
+
+        .btn-hover:hover {
+            transform: scale(1.03);
+        }
+
+        .floating {
+            animation: floating 4s ease-in-out infinite;
+        }
+
+        @keyframes floating {
+            0% {
+                transform: translateY(0px);
+            }
+
+            50% {
+                transform: translateY(-7px);
+            }
+
+            100% {
+                transform: translateY(0px);
+            }
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg,
+                    #504E76,
+                    #6E6AB3,
+                    #E7B96A);
+
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .history-card {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .history-card::before {
+            content: '';
+            position: absolute;
+            top: 12%;
+            left: 0;
+            width: 4px;
+            height: 76%;
+            border-radius: 0 5px 5px 0;
+            background: linear-gradient(to bottom,
+                    #504E76,
+                    #E7B96A);
+        }
+
+        .claim-row {
+            background: rgba(255, 255, 255, 0.55);
+            border: 1px solid rgba(255, 255, 255, 0.45);
+            border-radius: 18px;
+            padding: 12px;
+        }
+
+        .fade-up {
+            animation: fadeUp .5s ease both;
+        }
+
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(25px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .modal-input {
+            width: 100%;
+            border-radius: 16px;
+            background: rgba(80, 78, 118, 0.06);
+            border: 1px solid rgba(80, 78, 118, 0.12);
+            padding: 12px 16px 12px 45px;
+            outline: none;
+            transition: .3s;
+            font-size: 13px;
+            color: #504E76;
+        }
+
+        .modal-input:focus {
+            border-color: #504E76;
+            background: white;
+            box-shadow: 0 0 0 4px rgba(80, 78, 118, 0.10);
+        }
+
+        .modal-input-wrap {
+            position: relative;
+        }
+
+        .modal-input-wrap i {
+            position: absolute;
+            top: 50%;
+            left: 14px;
+            transform: translateY(-50%);
+            color: rgba(80, 78, 118, 0.40);
+        }
+
+        .modal-label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 12px;
+            font-weight: 700;
+            color: #504E76;
+        }
+
+        ::-webkit-scrollbar {
+            width: 7px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #504E76;
+            border-radius: 50px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+    </style>
 </head>
 
-<body class="bg-gradient-to-br from-[#FDF8E2] to-[#C4C3E3] min-h-screen">
+<body class="h-screen overflow-hidden">
 
-    <div class="flex min-h-screen">
+    <div class="flex h-screen overflow-x-hidden">
 
         @include('supplier.sidebar')
 
-        <main class="flex-1 overflow-y-auto px-6 py-5">
+        <!-- MAIN -->
+        <main class="flex-1 overflow-y-auto px-4 sm:px-6 lg:px-8 py-6 lg:py-8 pt-16 lg:pt-8">
 
-            <!-- HEADER -->
-            <div class="flex items-center justify-between mb-5">
+            <!-- TOP -->
+            <div class="flex flex-col lg:flex-row justify-between lg:items-center gap-5 mb-7 fade-up">
 
-                <!-- LEFT -->
-                <div class="flex items-center gap-3">
+                <!-- TITLE -->
+                <div class="flex items-center gap-4">
 
-                    <div class="w-12 h-12 rounded-2xl
-        bg-[#504E76]
-        text-white
-        flex items-center justify-center shadow-lg">
+                    <div
+                        class="w-14 h-14 rounded-2xl bg-[#504E76] flex items-center justify-center shadow-xl floating shrink-0">
 
-                        <i class='bx bx-history text-2xl'></i>
+                        <i class='bx bx-history text-2xl text-white'></i>
 
                     </div>
 
                     <div>
 
-                        <h1 class="text-[20px] font-black text-[#504E76]">
+                        <h1 class="text-2xl lg:text-4xl font-black gradient-text leading-tight">
 
                             Donation History
 
                         </h1>
 
-                        <p class="text-[10px] text-[#504E76]/70">
+                        <p class="text-[#504E76]/60 mt-1 text-sm lg:text-base">
 
-                            Track your donation activities
+                            Track your donation journey beautifully ✨
 
                         </p>
 
@@ -57,8 +225,388 @@
 
                 </div>
 
-                <!-- RIGHT -->
-                <div>
+                <!-- PROFILE -->
+                <div class="glass rounded-3xl px-5 py-3 soft-shadow smooth-card flex items-center gap-4">
+
+                    <div>
+
+                        <h1 class="font-black text-[#504E76] text-lg">
+
+                            {{ Auth::user()->username }}
+
+                        </h1>
+
+                        <p class="text-[#504E76]/60 text-sm">
+
+                            Supplier
+
+                        </p>
+
+                    </div>
+
+                    <img
+                        src="{{ Auth::user()->profile_photo ? asset(Auth::user()->profile_photo) : 'https://ui-avatars.com/api/?name=' . urlencode(Auth::user()->username) }}"
+                        class="w-14 h-14 rounded-full object-cover border-4 border-white shadow-lg">
+
+                </div>
+
+            </div>
+
+            <!-- EMPTY -->
+            @if($histories->isEmpty())
+
+            <div
+                class="glass rounded-[35px] p-16 soft-shadow flex flex-col items-center justify-center text-center fade-up">
+
+                <div
+                    class="w-28 h-28 rounded-full bg-[#504E76]/10 flex items-center justify-center mb-6 floating">
+
+                    <i class='bx bx-package text-6xl text-[#504E76]/30'></i>
+
+                </div>
+
+                <h1 class="text-3xl font-black text-[#504E76] mb-3">
+
+                    No Donation History
+
+                </h1>
+
+                <p class="text-[#504E76]/60 mb-7">
+
+                    Your donation activities will appear here.
+
+                </p>
+
+                <a href="/donate"
+                    class="bg-gradient-to-r from-[#504E76] to-[#6E6AB3]
+                          hover:from-[#E7B96A] hover:to-[#E89A4A]
+                          text-white px-7 py-3 rounded-2xl
+                          font-bold shadow-xl btn-hover">
+
+                    Start Donation
+
+                </a>
+
+            </div>
+
+            @else
+
+            <!-- GRID -->
+            <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-5">
+
+  @foreach($histories as $i => $history)
+
+@php
+    $delay = ($i % 8) * 0.06;
+@endphp
+
+<div
+    class="history-card glass rounded-[30px] overflow-hidden soft-shadow smooth-card fade-up"
+    {!! 'style="animation-delay: '.$delay.'s;"' !!}
+>
+
+    <!-- IMAGE -->
+    <div class="relative">
+
+        <img
+            src="{{ asset($history->food_photo) }}"
+            onerror="this.src='https://placehold.co/600x300/e8e6f7/504E76?text=No+Photo'"
+            class="w-full h-[150px] object-cover">
+
+        <!-- STATUS -->
+        <div class="absolute top-3 right-3">
+
+            <span
+                class="px-3 py-1 rounded-xl text-[10px] font-bold backdrop-blur-md
+
+                @if($history->status == 'pending')
+                    bg-yellow-100/90 text-yellow-700
+
+                @elseif($history->status == 'distribution')
+                    bg-blue-100/90 text-blue-700
+
+                @elseif($history->status == 'completed')
+                    bg-green-100/90 text-green-700
+
+                @else
+                    bg-gray-100/90 text-gray-700
+                @endif
+                ">
+
+                {{ ucfirst($history->status) }}
+
+            </span>
+
+        </div>
+
+    </div>
+
+    <!-- BODY -->
+    <div class="p-5">
+
+        <!-- FOOD -->
+        <h1
+            class="font-black text-[#504E76]
+            text-xl leading-tight mb-4 break-words">
+
+            {{ $history->food_name }}
+
+        </h1>
+
+        <!-- STATS -->
+        <div class="grid grid-cols-3 gap-2 mb-4">
+
+            <div class="bg-white/50 rounded-2xl p-3 text-center">
+
+                <p
+                    class="text-[10px]
+                    uppercase tracking-wider
+                    text-[#504E76]/50">
+
+                    Total
+
+                </p>
+
+                <h1
+                    class="font-black
+                    text-[#504E76]
+                    text-lg">
+
+                    {{ $history->quantity }}
+
+                </h1>
+
+            </div>
+
+            <div class="bg-white/50 rounded-2xl p-3 text-center">
+
+                <p
+                    class="text-[10px]
+                    uppercase tracking-wider
+                    text-[#504E76]/50">
+
+                    Left
+
+                </p>
+
+                <h1
+                    class="font-black
+                    text-[#504E76]
+                    text-lg">
+
+                    {{ $history->remaining_quantity }}
+
+                </h1>
+
+            </div>
+
+            <div class="bg-white/50 rounded-2xl p-3 text-center">
+
+                <p
+                    class="text-[10px]
+                    uppercase tracking-wider
+                    text-[#504E76]/50">
+
+                    Exp
+
+                </p>
+
+                <h1
+                    class="font-black
+                    text-[#504E76]
+                    text-xs">
+
+                    {{ \Carbon\Carbon::parse($history->expired_date)->format('d M') }}
+
+                </h1>
+
+            </div>
+
+        </div>
+
+        <!-- CLAIMS -->
+        @if($history->claims->count() > 0)
+
+        <p
+            class="text-[10px]
+            font-bold
+            uppercase
+            tracking-widest
+            text-[#504E76]/40
+            mb-3">
+
+            Claims
+
+        </p>
+
+        <div class="space-y-3 mb-4">
+
+            @foreach($history->claims as $claim)
+
+            <div class="claim-row">
+
+                <div class="flex justify-between items-start gap-2 mb-3">
+
+                    <div class="min-w-0">
+
+                        <h1
+                            class="font-bold
+                            text-[#504E76]
+                            text-sm truncate">
+
+                            {{ $claim->community->nama_komunitas }}
+
+                        </h1>
+
+                        <p
+                            class="text-[#504E76]/60
+                            text-xs">
+
+                            {{ $claim->claimed_quantity }} portions
+
+                        </p>
+
+                    </div>
+
+                    <span
+                        class="px-2 py-1 rounded-lg text-[10px] font-bold
+
+                        @if($claim->status == 'requested')
+                            bg-yellow-100 text-yellow-700
+
+                        @elseif($claim->status == 'approved')
+                            bg-blue-100 text-blue-700
+
+                        @elseif($claim->status == 'distribution')
+                            bg-purple-100 text-purple-700
+
+                        @elseif($claim->status == 'completed')
+                            bg-green-100 text-green-700
+                        @endif
+                        ">
+
+                        {{ ucfirst($claim->status) }}
+
+                    </span>
+
+                </div>
+
+                <!-- ACTION -->
+                <div class="flex justify-end">
+
+                    @if($claim->status == 'requested')
+
+                    <form
+                        action="/approve-donation/{{ $claim->id }}"
+                        method="POST">
+
+                        @csrf
+
+                        <button
+                            class="bg-[#A3B565]
+                            hover:bg-[#8ea14f]
+
+                            text-white
+                            px-4 py-2
+                            rounded-xl
+                            text-xs
+                            font-bold
+                            btn-hover">
+
+                            Accept
+
+                        </button>
+
+                    </form>
+
+                    @elseif($claim->status == 'approved')
+
+                    <button
+                        onclick="openModal('{{ $claim->id }}')"
+
+                        class="bg-gradient-to-r
+                        from-[#504E76]
+                        to-[#6E6AB3]
+
+                        hover:from-[#F1642E]
+                        hover:to-[#E8824E]
+
+                        text-white
+                        px-4 py-2
+                        rounded-xl
+                        text-xs
+                        font-bold
+                        btn-hover">
+
+                        Send
+
+                    </button>
+
+                    @elseif($claim->status == 'distribution')
+
+                    <span class="text-purple-600 text-xs font-bold">
+
+                        Waiting...
+
+                    </span>
+
+                    @elseif($claim->status == 'completed')
+
+                    <span class="text-green-600 text-xs font-bold">
+
+                        Done
+
+                    </span>
+
+                    @endif
+
+                </div>
+
+            </div>
+
+            @endforeach
+
+        </div>
+
+        @endif
+
+        <!-- MAP -->
+        <a
+            href="https://www.google.com/maps/search/?api=1&query={{ urlencode($history->pickup_location) }}"
+            target="_blank"
+
+            class="w-full bg-white/50
+            hover:bg-[#504E76]
+
+            text-[#504E76]
+            hover:text-white
+
+            py-3 rounded-2xl
+
+            flex items-center justify-center gap-2
+
+            text-sm font-bold
+
+            transition-all duration-300
+            btn-hover">
+
+            <i class='bx bx-map text-lg'></i>
+
+            View on Maps
+
+        </a>
+
+    </div>
+
+</div>
+
+@endforeach
+            </div>
+
+            <!-- PAGINATION -->
+            <div class="mt-8 flex justify-center">
+
+                <div class="glass rounded-2xl p-3 soft-shadow">
 
                     {{ $histories->links() }}
 
@@ -66,467 +614,13 @@
 
             </div>
 
-            <!-- LIST -->
-            <!-- LIST -->
-            <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
+            @endif
 
-                @foreach($histories as $history)
+            <div class="h-8"></div>
 
-                <div class="bg-white/30 backdrop-blur-2xl border border-white/20 rounded-[24px] p-3 shadow-lg">
-
-                    <!-- IMAGE -->
-                    <img
-                        src="{{ asset($history->food_photo) }}"
-                        onerror="this.src='https://placehold.co/600x400?text=No+Image'"
-                        class="w-full h-[100px] object-cover rounded-2xl">
-
-                    <!-- TOP -->
-                    <div class="mt-3">
-
-                        <div class="flex items-start justify-between gap-2">
-
-                            <h1 class="text-[14px] font-black text-[#504E76] leading-tight">
-
-                                {{ $history->food_name }}
-
-                            </h1>
-
-                        </div>
-
-                        <!-- DATE -->
-                        <p class="text-[9px] text-[#504E76]/60 mt-1">
-
-                            {{ $history->created_at->format('d M Y • H:i') }}
-
-                        </p>
-
-                    </div>
-                    <!-- INFO -->
-                    <div class="mt-3 space-y-3">
-
-                        <!-- ROW -->
-                        <div class="flex justify-between gap-2">
-
-                            <div>
-
-                                <p class="text-[8px] text-[#504E76]/50">
-                                    Total Qty
-                                </p>
-
-                                <h1 class="font-bold text-[#504E76] text-[10px] mt-1">
-
-                                    {{ $history->quantity }}
-
-                                </h1>
-
-                            </div>
-
-                            <div>
-
-                                <p class="text-[8px] text-[#504E76]/50">
-                                    Remaining
-                                </p>
-
-                                <h1 class="font-bold text-[#504E76] text-[10px] mt-1">
-
-                                    {{ $history->remaining_quantity }}
-
-                                </h1>
-
-                            </div>
-
-                            <div class="text-right">
-
-                                <p class="text-[8px] text-[#504E76]/50">
-                                    Expired
-                                </p>
-
-                                <h1 class="font-bold text-[#504E76] text-[10px] mt-1">
-
-                                    {{ $history->expired_date }}
-
-                                </h1>
-
-                            </div>
-
-                        </div>
-
-                        <!-- CLAIMS -->
-                        @foreach($history->claims as $claim)
-
-                        <div class="bg-white/40 rounded-2xl p-3">
-
-                            <!-- TOP -->
-                            <div class="flex items-center justify-between">
-
-                                <div>
-
-                                    <p class="text-[8px] text-[#504E76]/50">
-                                        Community
-                                    </p>
-
-                                    <h1 class="font-bold text-[#504E76] text-[11px]">
-
-                                        {{ $claim->community->nama_komunitas }}
-
-                                    </h1>
-
-                                </div>
-
-                                <!-- STATUS -->
-                                <div class="
-                px-2 py-1 rounded-lg
-                text-[8px]
-                font-semibold
-
-                @if($claim->status == 'requested')
-                    bg-yellow-100 text-yellow-700
-
-                @elseif($claim->status == 'approved')
-                    bg-blue-100 text-blue-700
-
-                @elseif($claim->status == 'distribution')
-                    bg-purple-100 text-purple-700
-
-                @elseif($claim->status == 'completed')
-                    bg-green-100 text-green-700
-
-                @endif
-            ">
-
-                                    {{ ucfirst($claim->status) }}
-
-                                </div>
-
-                            </div>
-
-                            <!-- CLAIM INFO -->
-                            <div class="mt-2 flex justify-between items-center">
-
-                                <div>
-
-                                    <p class="text-[8px] text-[#504E76]/50">
-                                        Claimed
-                                    </p>
-
-                                    <h1 class="font-bold text-[#504E76] text-[10px]">
-
-                                        {{ $claim->claimed_quantity }} portions
-
-                                    </h1>
-
-                                </div>
-
-                                <!-- ACCEPT -->
-                                @if($claim->status == 'requested')
-
-                                <form
-                                    action="/approve-donation/{{ $claim->id }}"
-                                    method="POST">
-
-                                    @csrf
-
-                                    <button
-                                        class="bg-[#A3B565]
-        hover:bg-[#8ea14f]
-        transition-all duration-300
-        text-white
-        px-4 py-2
-        rounded-xl
-        text-[9px]
-        font-semibold">
-
-                                        Accept
-
-                                    </button>
-
-                                </form>
-
-                                @elseif($claim->status == 'approved')
-
-                                <button
-                                    onclick="openModal('{{ $claim->id }}')"
-
-                                    class="bg-[#504E76]
-    hover:bg-[#F1642E]
-    transition-all duration-300
-    text-white
-    px-4 py-2
-    rounded-xl
-    text-[9px]
-    font-semibold">
-
-                                    Send
-
-                                </button>
-
-                                @elseif($claim->status == 'distribution')
-
-                                <p class="text-[9px] text-purple-600 font-semibold">
-
-                                    Waiting Confirmation
-
-                                </p>
-
-                                @elseif($claim->status == 'completed')
-
-                                <p class="text-[9px] text-green-600 font-semibold">
-
-                                    Completed
-
-                                </p>
-
-                                @endif
-
-                            </div>
-
-                        </div>
-
-                        @endforeach
-
-                    </div>
-
-                    <!-- BUTTON -->
-                    <div class="mt-3">
-
-                        <a
-                            href="https://www.google.com/maps/search/?api=1&query={{ urlencode($history->pickup_location) }}"
-                            target="_blank"
-
-                            class="w-full
-        bg-[#504E76]
-        hover:bg-[#F1642E]
-        transition-all duration-300
-        text-white
-        py-2 rounded-xl
-        flex items-center justify-center gap-1
-        text-[9px] font-semibold">
-
-                            <i class='bx bx-map text-xs'></i>
-
-                            Maps
-
-                        </a>
-
-                    </div>
-
-                </div>
-
-                @endforeach
-
-            </div>
         </main>
 
     </div>
-
-    @foreach($histories as $history)
-
-    @foreach($history->claims as $claim)
-
-    <div
-        id="modal-{{ $claim->id }}"
-
-        class="hidden fixed inset-0
-        bg-black/40 backdrop-blur-sm
-        z-50 flex items-center justify-center px-4">
-
-        <div class="bg-white rounded-3xl
-        p-6 w-full max-w-[400px]
-        shadow-2xl">
-
-            <div class="flex items-center justify-between mb-5">
-
-                <h1 class="text-xl font-black text-[#504E76]">
-
-                    Distribution Proof
-
-                </h1>
-
-                <button
-                    type="button"
-
-                    onclick="closeModal('{{ $claim->id }}')"
-
-                    class="text-3xl text-[#504E76] leading-none">
-
-                    &times;
-
-                </button>
-
-            </div>
-
-            <form
-                action="/send-distribution/{{ $claim->id }}"
-                method="POST"
-                enctype="multipart/form-data">
-
-                @csrf
-
-                <!-- DELIVERY DATE -->
-                <div class="mb-3">
-
-                    <label class="block text-sm font-semibold text-[#504E76] mb-2">
-
-                        Delivery Date
-
-                    </label>
-
-                    <input
-                        type="datetime-local"
-                        name="delivery_date"
-                        required
-
-                        class="w-full bg-white/60
-            border border-white/30
-            rounded-2xl
-            px-4 py-3
-            text-sm text-[#504E76]">
-                </div>
-
-                <!-- COURIER NAME -->
-                <div class="mb-3">
-
-                    <label class="block text-sm font-semibold text-[#504E76] mb-2">
-
-                        Courier Name
-
-                    </label>
-
-                    <input
-                        type="text"
-                        name="courier_name"
-                        required
-
-                        placeholder="Input courier name"
-
-                        class="w-full bg-white/60
-            border border-white/30
-            rounded-2xl
-            px-4 py-3
-            text-sm text-[#504E76]">
-                </div>
-
-                <!-- COURIER PHONE -->
-                <div class="mb-3">
-
-                    <label class="block text-sm font-semibold text-[#504E76] mb-2">
-
-                        Courier Phone
-
-                    </label>
-
-                    <input
-                        type="text"
-                        name="courier_phone"
-                        required
-
-                        placeholder="08xxxxxxxxxx"
-
-                        class="w-full bg-white/60
-            border border-white/30
-            rounded-2xl
-            px-4 py-3
-            text-sm text-[#504E76]">
-                </div>
-
-                <!-- PHOTO -->
-                <div class="mb-4">
-
-                    <label class="block text-sm font-semibold text-[#504E76] mb-2">
-
-                        Distribution Proof Photo
-
-                    </label>
-
-                    <input
-                        type="file"
-                        name="supplier_proof_photo"
-                        required
-
-                        class="w-full bg-white/60
-            border border-white/30
-            rounded-2xl
-            px-4 py-3
-            text-sm text-[#504E76]">
-                </div>
-
-                <!-- BUTTON -->
-                <button
-                    type="submit"
-
-                    class="w-full
-        bg-[#504E76]
-        hover:bg-[#F1642E]
-        transition-all duration-300
-        text-white py-3
-        rounded-2xl
-        font-semibold text-sm">
-
-                    Start Distribution
-
-                </button>
-
-            </form>
-
-        </div>
-
-    </div>
-
-    @endforeach
-
-    @endforeach
-
-    @if($history->status == 'distribution')
-
-    <div class="mt-3 bg-white/40 rounded-2xl p-3">
-
-        <p class="text-[10px] text-[#504E76]/50">
-            Courier
-        </p>
-
-        <h1 class="font-bold text-[#504E76] text-xs">
-
-            {{ $history->courier_name }}
-
-        </h1>
-
-        <p class="text-[10px] text-[#504E76]/50 mt-2">
-            Phone
-        </p>
-
-        <h1 class="font-bold text-[#504E76] text-xs">
-
-            {{ $history->courier_phone }}
-
-        </h1>
-
-        <p class="text-[10px] text-[#504E76]/50 mt-2">
-            Delivery Date
-        </p>
-
-        <h1 class="font-bold text-[#504E76] text-xs">
-
-            {{ $history->delivery_date }}
-
-        </h1>
-
-    </div>
-
-    @endif
-
-    <script>
-        function openModal(id) {
-            document
-                .getElementById(`modal-${id}`)
-                .classList.remove('hidden')
-        }
-
-        function closeModal(id) {
-            document
-                .getElementById(`modal-${id}`)
-                .classList.add('hidden')
-        }
-    </script>
 
 </body>
 
