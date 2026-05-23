@@ -153,7 +153,6 @@
             class="flex-1 overflow-y-auto px-4 sm:px-6 lg:px-8 py-6 lg:py-8 pt-16 lg:pt-8">
 
             <!-- TOPBAR -->
-            <!-- TOP -->
             <div class="flex flex-col lg:flex-row justify-between lg:items-center gap-4 mb-7 fade-up">
 
                 <!-- TITLE -->
@@ -170,7 +169,7 @@
                 </div>
 
                 <!-- PROFILE -->
-                <div class="glass rounded-2xl px-4 py-3 flex items-center gap-3 soft-shadow smooth-card">
+                <div class="glass rounded-2xl px-4 py-3 flex items-center justify-between gap-3 soft-shadow smooth-card w-full lg:w-auto">
 
                     <div>
 
@@ -371,10 +370,10 @@
             </div>
 
             <!-- SECTION -->
-            <div class="grid grid-cols-3 gap-5 mb-5">
+            <div class="grid grid-cols-1 xl:grid-cols-3 gap-5 mb-5">
 
                 <!-- AVAILABLE DONATIONS -->
-                <div class="col-span-2 bg-white/30 backdrop-blur-2xl rounded-3xl p-5 lg:p-6 soft-shadow smooth-card fade-up shadow-xl">
+                <div class="xl:col-span-2 bg-white/30 backdrop-blur-2xl rounded-3xl p-5 lg:p-6 soft-shadow smooth-card fade-up shadow-xl">
 
                     <div class="flex items-center justify-between mb-5">
 
@@ -400,7 +399,7 @@
                         @endif
                         ">
 
-                            <div class="flex items-center justify-between">
+                            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
 
                                 <div>
 
@@ -444,7 +443,11 @@
                                     hover:bg-[#F1642E]
                                     @endif
 
-                                    transition-all duration-300 text-white px-4 py-2 rounded-xl text-sm font-semibold">
+                                    w-full sm:w-auto
+text-center
+transition-all duration-300
+text-white px-4 py-3
+rounded-xl text-sm font-semibold">
 
                                     Claim Pickup
 
@@ -474,7 +477,11 @@
                         <!-- AVAILABLE DONATIONS -->
                         <a href="/community-dashboard"
 
-                            class="bg-[#504E76] hover:bg-[#F1642E] transition-all duration-300 text-white rounded-2xl p-4 flex items-center gap-3">
+                            class="bg-[#504E76] hover:bg-[#F1642E]
+transition-all duration-300
+text-white rounded-2xl
+p-4 flex items-center gap-3
+w-full">
 
                             <i class='bx bx-food-menu text-2xl'></i>
 
@@ -510,7 +517,7 @@
             <!-- ACTIVE DISTRIBUTION -->
             <div class="glass rounded-3xl p-5 lg:p-6 soft-shadow smooth-card fade-up mb-5">
 
-                <div class="flex items-center justify-between mb-6">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6">
 
                     <h1 class="text-2xl font-black text-[#504E76]">
                         Active Distribution
