@@ -14,6 +14,7 @@
 
     <!-- Leaflet -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+<<<<<<< HEAD
 
     <!-- Font -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -280,6 +281,83 @@
         }
     </style>
 
+=======
+
+    <!-- Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+
+    <style>
+        * {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            overflow-x: hidden;
+        }
+
+        .glass {
+            background: rgba(255, 255, 255, .35);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+            border: 1px solid rgba(255, 255, 255, .25);
+        }
+
+        .soft-shadow {
+            box-shadow:
+                0 12px 35px rgba(80, 78, 118, .10),
+                0 5px 10px rgba(0, 0, 0, .03);
+        }
+
+        .smooth-card {
+            transition: .35s ease;
+        }
+
+        .smooth-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 25px 40px rgba(80, 78, 118, .16);
+        }
+
+        .btn-hover {
+            transition: .3s ease;
+        }
+
+        .btn-hover:hover {
+            transform: scale(1.02);
+            box-shadow: 0 15px 30px rgba(80, 78, 118, .20);
+        }
+
+        .btn-hover:active {
+            transform: scale(.97);
+        }
+
+        .floating {
+            animation: floating 4s ease-in-out infinite;
+        }
+
+        @keyframes floating {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-8px);
+            }
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, #504E76, #6E6AB3, #E8C067);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+    </style>
+>>>>>>> 95c7bc3
 </head>
 
 <body class="bg-gradient-to-br from-[#FDF8E2] to-[#C4C3E3] min-h-screen overflow-x-hidden">
@@ -497,12 +575,25 @@
 
                                     </button>
 
+<<<<<<< HEAD
                                 </div>
 
                             </div>
 
                             <div class="glass rounded-[26px] p-2 soft-shadow smooth-card">
                                 <div id="map"></div>
+=======
+                    <!-- BOTTOM SECTION -->
+                    <div class="col-span-2 grid grid-cols-2 gap-5">
+
+                        <!-- MAP -->
+                        <div>
+
+                            <div
+                                id="map"
+                                class="w-full h-[230px]
+            rounded-3xl overflow-hidden shadow-lg">
+>>>>>>> 95c7bc3
                             </div>
 
                         </div>

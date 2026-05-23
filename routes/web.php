@@ -17,6 +17,7 @@ Route::get('/', function () {
     return view('landing');
 });
 
+<<<<<<< HEAD
 Route::get('/login', function () {
     return view('auth');
 });
@@ -24,6 +25,9 @@ Route::get('/login', function () {
 Route::get('/register', function () {
     return view('auth');
 });
+=======
+Route::get('/login', [AuthController::class, 'index']);
+>>>>>>> 95c7bc3
 
 Route::post('/login', [AuthController::class, 'login']);
 
@@ -141,19 +145,5 @@ Route::middleware(['role:community'])->group(function () {
     Route::post(
         '/community-settings/password',
         [CommunityController::class, 'updatePassword']
-    );
-});
-
-/*
-|--------------------------------------------------------------------------
-| ADMIN
-|--------------------------------------------------------------------------
-*/
-
-Route::middleware(['role:superadmin'])->group(function () {
-
-    Route::get(
-        '/dashboard-admin',
-        [AdminController::class, 'dashboard']
     );
 });

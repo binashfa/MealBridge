@@ -77,8 +77,6 @@ class AuthController extends Controller
                 return redirect('/dashboard-supplier');
             } elseif (Auth::user()->role == 'community') {
                 return redirect('/dashboard-community');
-            } elseif (Auth::user()->role == 'superadmin') {
-                return redirect('/dashboard-admin');
             }
         }
 

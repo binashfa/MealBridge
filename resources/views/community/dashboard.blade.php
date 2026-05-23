@@ -16,9 +16,132 @@
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 
     <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/uicons-solid-rounded/css/uicons-solid-rounded.css'>
+
+    <style>
+        * {
+            scroll-behavior: smooth;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            overflow-x: hidden;
+        }
+
+        /* GLASS */
+        .glass {
+            background: rgba(255, 255, 255, 0.35);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+        }
+
+        /* SHADOW */
+        .soft-shadow {
+            box-shadow:
+                0 12px 35px rgba(80, 78, 118, 0.10),
+                0 5px 10px rgba(0, 0, 0, 0.03);
+        }
+
+        /* CARD HOVER */
+        .smooth-card {
+            transition: all .35s ease;
+        }
+
+        .smooth-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 25px 40px rgba(80, 78, 118, 0.16);
+        }
+
+        /* BUTTON */
+        .btn-hover {
+            transition: all .3s ease;
+        }
+
+        .btn-hover:hover {
+            transform: scale(1.02);
+        }
+
+        /* FLOATING */
+        .floating {
+            animation: floating 4s ease-in-out infinite;
+        }
+
+        @keyframes floating {
+            0% {
+                transform: translateY(0px);
+            }
+
+            50% {
+                transform: translateY(-8px);
+            }
+
+            100% {
+                transform: translateY(0px);
+            }
+        }
+
+        /* GRADIENT TEXT */
+        .gradient-text {
+            background: linear-gradient(135deg,
+                    #504E76,
+                    #6E6AB3,
+                    #E8C067);
+
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* STAT CARD */
+        .stat-card {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 14%;
+            height: 72%;
+            width: 4px;
+            border-radius: 0 4px 4px 0;
+            background: #504E76;
+        }
+
+        /* FADE */
+        .fade-up {
+            animation: fadeUp .5s cubic-bezier(.22, .68, 0, 1.1) both;
+        }
+
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* SCROLLBAR */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #504E76;
+            border-radius: 50px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+    </style>
 </head>
 
-<body class="bg-gradient-to-br from-[#FDF8E2] to-[#C4C3E3] min-h-screen overflow-hidden">
+<body class="bg-gradient-to-br from-[#FDF8E2] to-[#C4C3E3] h-screen overflow-hidden">
 
     <div class="flex h-screen">
 
@@ -27,56 +150,60 @@
         <!-- MAIN CONTENT -->
         <main
             id="mainContent"
-            class="flex-1 overflow-y-auto px-8 py-8">
+            class="flex-1 overflow-y-auto px-4 sm:px-6 lg:px-8 py-6 lg:py-8 pt-16 lg:pt-8">
 
             <!-- TOPBAR -->
-            <div class="flex items-center justify-between mb-6">
+            <!-- TOP -->
+            <div class="flex flex-col lg:flex-row justify-between lg:items-center gap-4 mb-7 fade-up">
 
+                <!-- TITLE -->
                 <div>
 
-                    <h1 class="text-4xl font-black text-[#504E76] mb-1">
-                        Welcome Back 👋
+                    <h1 class="text-2xl lg:text-4xl font-black gradient-text leading-tight">
+                        Welcome Back, {{ Auth::user()->username }}!
                     </h1>
 
-                    <p class="text-[#504E76]/70">
-                        Help distribute food to communities in need.
+                    <p class="text-[#504E76]/65 mt-1 text-sm lg:text-base">
+                        Help distribute food beautifully 🍱
                     </p>
 
                 </div>
 
                 <!-- PROFILE -->
-                <div class="bg-white/30 backdrop-blur-2xl rounded-2xl px-5 py-3 flex items-center gap-4 shadow-xl">
+                <div class="glass rounded-2xl px-4 py-3 flex items-center gap-3 soft-shadow smooth-card">
 
                     <div>
 
-                        <h1 class="font-bold text-[#504E76]">
+                        <h1 class="font-black text-[#504E76] text-base lg:text-lg">
+
                             {{ Auth::user()->username }}
+
                         </h1>
 
-                        <p class="text-sm text-[#504E76]/70">
+                        <p class="text-[#504E76]/60 text-xs lg:text-sm">
+
                             Community
+
                         </p>
 
                     </div>
 
                     <img
                         src="{{ Auth::user()->profile_photo
-                        ? asset(Auth::user()->profile_photo)
-                        : 'https://ui-avatars.com/api/?name=' . urlencode(Auth::user()->username) }}"
+                ? asset(Auth::user()->profile_photo)
+                : 'https://ui-avatars.com/api/?name=' . urlencode(Auth::user()->username) }}"
 
-                        onerror="this.src='https://ui-avatars.com/api/?name={{ urlencode(Auth::user()->username) }}'"
-
-                        class="w-12 h-12 rounded-full object-cover border-2 border-white shadow-lg">
+                        class="w-12 h-12 lg:w-14 lg:h-14 rounded-full border-4 border-white object-cover shadow-lg">
 
                 </div>
 
             </div>
 
             <!-- STATISTICS -->
-            <div class="grid grid-cols-4 gap-5 mb-8">
+            <div class="grid grid-cols-2 xl:grid-cols-4 gap-3 lg:gap-4 mb-7">
 
                 <!-- ACTIVE PICKUP -->
-                <div class="bg-white/30 backdrop-blur-2xl rounded-[30px] p-6 shadow-xl border border-white/20">
+                <div class="stat-card glass soft-shadow smooth-card rounded-2xl px-4 lg:px-5 py-4">
 
                     <div class="flex items-start justify-between">
 
@@ -108,7 +235,7 @@
                 </div>
 
                 <!-- MEALS DISTRIBUTED -->
-                <div class="bg-white/30 backdrop-blur-2xl rounded-[30px] p-6 shadow-xl border border-white/20">
+                <div class="stat-card glass soft-shadow smooth-card rounded-2xl px-4 lg:px-5 py-4">
 
                     <div class="flex items-start justify-between">
 
@@ -140,7 +267,7 @@
                 </div>
 
                 <!-- EMERGENCY -->
-                <div class="bg-white/30 backdrop-blur-2xl rounded-[30px] p-6 shadow-xl border border-white/20">
+                <div class="stat-card glass soft-shadow smooth-card rounded-2xl px-4 lg:px-5 py-4">
 
                     <div class="flex items-start justify-between">
 
@@ -172,7 +299,7 @@
                 </div>
 
                 <!-- CLAIM LIMIT -->
-                <div class="bg-white/30 backdrop-blur-2xl rounded-[30px] p-6 shadow-xl border border-white/20">
+                <div class="stat-card glass soft-shadow smooth-card rounded-2xl px-4 lg:px-5 py-4">
 
                     <!-- TOP -->
                     <div class="flex items-start justify-between">
@@ -247,7 +374,7 @@
             <div class="grid grid-cols-3 gap-5 mb-5">
 
                 <!-- AVAILABLE DONATIONS -->
-                <div class="col-span-2 bg-white/30 backdrop-blur-2xl rounded-3xl p-6 shadow-xl">
+                <div class="col-span-2 bg-white/30 backdrop-blur-2xl rounded-3xl p-5 lg:p-6 soft-shadow smooth-card fade-up shadow-xl">
 
                     <div class="flex items-center justify-between mb-5">
 
@@ -334,7 +461,7 @@
                 </div>
 
                 <!-- QUICK ACTION -->
-                <div class="bg-white/30 backdrop-blur-2xl rounded-3xl p-6 shadow-xl">
+                <div class="glass rounded-3xl p-5 soft-shadow smooth-card fade-up">
 
                     <h1 class="text-2xl font-black text-[#504E76] mb-5">
 
@@ -381,7 +508,7 @@
             </div>
 
             <!-- ACTIVE DISTRIBUTION -->
-            <div class="bg-white/30 backdrop-blur-2xl rounded-3xl p-6 shadow-xl mb-5">
+            <div class="glass rounded-3xl p-5 lg:p-6 soft-shadow smooth-card fade-up mb-5">
 
                 <div class="flex items-center justify-between mb-6">
 

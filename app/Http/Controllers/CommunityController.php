@@ -589,26 +589,6 @@ class CommunityController extends Controller
 
         /*
     |--------------------------------------------------------------------------
-    | UPLOAD PHOTO
-    |--------------------------------------------------------------------------
-    */
-
-        if ($request->hasFile('profile_photo')) {
-
-            $photoName = time() . '.' .
-                $request->profile_photo->extension();
-
-            $request->profile_photo->move(
-                public_path('profile_photos'),
-                $photoName
-            );
-
-            $user->profile_photo =
-                'profile_photos/' . $photoName;
-        }
-
-        /*
-    |--------------------------------------------------------------------------
     | UPDATE USERS TABLE
     |--------------------------------------------------------------------------
     */

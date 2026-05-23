@@ -17,6 +17,52 @@
     <link
         rel="stylesheet"
         href="https://cdn-uicons.flaticon.com/uicons-solid-rounded/css/uicons-solid-rounded.css">
+
+    <style>
+        .gradient-text {
+            background: linear-gradient(135deg,
+                    #504E76,
+                    #6E6AB3,
+                    #E7B96A);
+
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .floating {
+            animation: floating 4s ease-in-out infinite;
+        }
+
+        @keyframes floating {
+            0% {
+                transform: translateY(0px);
+            }
+
+            50% {
+                transform: translateY(-7px);
+            }
+
+            100% {
+                transform: translateY(0px);
+            }
+        }
+
+        .fade-up {
+            animation: fadeUp .5s ease both;
+        }
+
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
 </head>
 
 <body class="bg-gradient-to-br from-[#FDF8E2]
@@ -30,25 +76,31 @@ to-[#C4C3E3]">
         <main class="flex-1 overflow-y-auto px-8 py-6">
 
             <!-- HEADER -->
-            <div class="flex items-center gap-4 mb-5">
+            <div class="flex flex-col lg:flex-row justify-between lg:items-center gap-4 mb-7 fade-up d1">
 
-                <div class="w-14 h-14 rounded-2xl
-                bg-[#504E76] text-white
-                flex items-center justify-center shadow-xl">
+                <!-- LEFT -->
+                <div class="flex items-center gap-4">
 
-                    <i class='bx bx-cog text-2xl'></i>
+                    <div class="w-14 h-14 rounded-2xl
+    bg-[#504E76] text-white
+    flex items-center justify-center
+    shadow-xl floating">
 
-                </div>
+                        <i class='bx bx-cog text-2xl'></i>
 
-                <div>
+                    </div>
 
-                    <h1 class="text-2xl font-black text-[#504E76]">
-                        Profile Settings
-                    </h1>
+                    <div>
 
-                    <p class="text-sm text-[#504E76]/60">
-                        Update your personal information
-                    </p>
+                        <h1 class="text-2xl lg:text-4xl font-black gradient-text">
+                            Profile Settings
+                        </h1>
+
+                        <p class="text-[#504E76]/65 mt-1 text-sm lg:text-base">
+                            Update your community information 🌍
+                        </p>
+
+                    </div>
 
                 </div>
 
@@ -461,16 +513,14 @@ text-red-700 p-3 rounded-2xl text-sm">
 
                         <div>
 
-                            <h1 class="text-3xl font-black text-[#504E76]">
+                            <h1 class="text-2xl lg:text-4xl font-black gradient-text">
 
                                 Change Password
 
                             </h1>
 
-                            <p class="text-[#504E76]/60 text-sm mt-1">
-
-                                Update your account password securely
-
+                            <p class="text-[#504E76]/65 mt-1 text-sm lg:text-base">
+                                Update your account password securely 🔒
                             </p>
 
                         </div>

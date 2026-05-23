@@ -116,8 +116,6 @@ class SupplierController extends Controller
 
             'pickup_location' => 'required',
 
-            'pickup_time' => 'required',
-
             'food_photo' => 'required|image',
 
             'description' => 'nullable',
@@ -153,8 +151,6 @@ class SupplierController extends Controller
             'expired_date' => $request->expired_date,
 
             'pickup_location' => $request->pickup_location,
-
-            'pickup_time' => $request->pickup_time,
 
             'food_photo' => $photo,
 
@@ -213,7 +209,7 @@ class SupplierController extends Controller
         $supplier = Auth::user()->supplier;
 
         $histories = Donation::with([
-            'claims.community',
+            'claims.community.user',
             'supplier'
         ])
 

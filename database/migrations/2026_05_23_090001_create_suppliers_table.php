@@ -8,22 +8,21 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create('notifications', function (Blueprint $table) {
+        Schema::create('suppliers', function (Blueprint $table) {
 
             $table->id();
 
             $table->foreignId('user_id')
-                  ->nullable()
                   ->constrained('users')
                   ->onDelete('cascade');
 
-            $table->string('title');
+            $table->string('nama_toko');
 
-            $table->text('message');
+            $table->text('alamat_toko');
 
-            $table->string('type');
+            $table->decimal('latitude', 10, 7)->nullable();
 
-            $table->boolean('is_read')->default(false);
+            $table->decimal('longitude', 10, 7)->nullable();
 
             $table->timestamps();
         });
@@ -31,6 +30,6 @@ return new class extends Migration
 
     public function down(): void
     {
-        Schema::dropIfExists('notifications');
+        Schema::dropIfExists('suppliers');
     }
 };
