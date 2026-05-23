@@ -227,7 +227,6 @@
 
                 <!-- PROFILE -->
                 <div class="glass rounded-3xl px-5 py-3 soft-shadow smooth-card flex items-center gap-4">
-<<<<<<< HEAD
 
                     <div>
 
@@ -608,8 +607,6 @@
             <div class="mt-8 flex justify-center">
 
                 <div class="glass rounded-2xl p-3 soft-shadow">
-=======
->>>>>>> 95c7bc3
 
                     <div>
 

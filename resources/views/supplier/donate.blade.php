@@ -14,7 +14,6 @@
 
     <!-- Leaflet -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-<<<<<<< HEAD
 
     <!-- Font -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -281,83 +280,6 @@
         }
     </style>
 
-=======
-
-    <!-- Font -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap"
-        rel="stylesheet">
-
-    <style>
-        * {
-            scroll-behavior: smooth;
-        }
-
-        body {
-            font-family: 'Poppins', sans-serif;
-            overflow-x: hidden;
-        }
-
-        .glass {
-            background: rgba(255, 255, 255, .35);
-            backdrop-filter: blur(18px);
-            -webkit-backdrop-filter: blur(18px);
-            border: 1px solid rgba(255, 255, 255, .25);
-        }
-
-        .soft-shadow {
-            box-shadow:
-                0 12px 35px rgba(80, 78, 118, .10),
-                0 5px 10px rgba(0, 0, 0, .03);
-        }
-
-        .smooth-card {
-            transition: .35s ease;
-        }
-
-        .smooth-card:hover {
-            transform: translateY(-6px);
-            box-shadow: 0 25px 40px rgba(80, 78, 118, .16);
-        }
-
-        .btn-hover {
-            transition: .3s ease;
-        }
-
-        .btn-hover:hover {
-            transform: scale(1.02);
-            box-shadow: 0 15px 30px rgba(80, 78, 118, .20);
-        }
-
-        .btn-hover:active {
-            transform: scale(.97);
-        }
-
-        .floating {
-            animation: floating 4s ease-in-out infinite;
-        }
-
-        @keyframes floating {
-
-            0%,
-            100% {
-                transform: translateY(0);
-            }
-
-            50% {
-                transform: translateY(-8px);
-            }
-        }
-
-        .gradient-text {
-            background: linear-gradient(135deg, #504E76, #6E6AB3, #E8C067);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-    </style>
->>>>>>> 95c7bc3
 </head>
 
 <body class="bg-gradient-to-br from-[#FDF8E2] to-[#C4C3E3] min-h-screen overflow-x-hidden">
@@ -418,122 +340,110 @@
             </div>
 
             <!-- FORM -->
-            <div class="glass rounded-3xl p-5 lg:p-7 soft-shadow fade-up d2">
+            <div class="bg-white/30 backdrop-blur-2xl
+                border border-white/20
+                rounded-3xl p-6 shadow-2xl">
 
-                <form action="/donate" method="POST" enctype="multipart/form-data">
+                <form
+                    action="/donate"
+                    method="POST"
+                    enctype="multipart/form-data"
+
+                    class="grid grid-cols-2 gap-x-4 gap-y-2">
 
                     @csrf
 
-                    <!-- FOOD -->
-                    <p class="section-title">Food Information</p>
+                    <!-- FOOD NAME -->
+                    <div>
 
-                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-6">
+                        <label class="block text-sm
+                            font-semibold text-[#504E76] mb-2">
 
-                        <div>
+                            Food Name
 
-                            <label class="field-label">
-                                <span class="label-dot"></span>
-                                Food Name
-                            </label>
+                        </label>
 
-                            <div class="input-wrap">
+                        <input
+                            type="text"
+                            name="food_name"
+                            placeholder="Bread, Rice Box"
 
-                                <i class='bx bx-bowl-rice input-icon'></i>
-
-                                <input type="text" name="food_name" placeholder="e.g. Nasi Kotak"
-                                    class="input-style">
-
-                            </div>
-
-                        </div>
-
-                        <div>
-
-                            <label class="field-label">
-                                <span class="label-dot"></span>
-                                Quantity
-                            </label>
-
-                            <div class="input-wrap">
-
-                                <i class='bx bx-package input-icon'></i>
-
-                                <input type="number" name="quantity" placeholder="e.g. 20"
-                                    class="input-style">
-
-                            </div>
-
-                        </div>
+                            class="w-full p-3 rounded-2xl
+                            bg-white/70 border border-white/30
+                            focus:outline-none text-sm">
 
                     </div>
 
                     <!-- CATEGORY -->
-                    <div class="mb-6">
+                    <div>
 
-                        <label class="field-label">
-                            <span class="label-dot"></span>
+                        <label class="block text-sm
+                            font-semibold text-[#504E76] mb-2">
+
                             Food Category
+
                         </label>
 
-                        <input type="hidden" id="category-input" name="category" value="Rice">
+                        <select
+                            name="category"
 
-                        <div class="flex gap-2 flex-wrap sm:flex-nowrap">
+                            class="w-full p-3 rounded-2xl
+                            bg-white/70 border border-white/30
+                            focus:outline-none text-sm">
 
-                            <div class="cat-chip active" onclick="selectCat(this,'Rice')">
-                                <i class='bx bx-bowl-rice text-2xl text-[#504E76]'></i>
-                                <span>Rice</span>
-                            </div>
+                            <option value="Rice">
+                                Rice
+                            </option>
 
-                            <div class="cat-chip" onclick="selectCat(this,'Bread')">
-                                <i class='bx bx-cookie text-2xl text-[#504E76]'></i>
-                                <span>Bread</span>
-                            </div>
+                            <option value="Bread">
+                                Bread
+                            </option>
 
-                            <div class="cat-chip" onclick="selectCat(this,'Snack')">
-                                <i class='bx bx-lemon text-2xl text-[#504E76]'></i>
-                                <span>Snack</span>
-                            </div>
+                            <option value="Snack">
+                                Snack
+                            </option>
 
-                            <div class="cat-chip" onclick="selectCat(this,'Drink')">
-                                <i class='bx bx-drink text-2xl text-[#504E76]'></i>
-                                <span>Drink</span>
-                            </div>
+                            <option value="Drink">
+                                Drink
+                            </option>
 
-                        </div>
+                        </select>
 
                     </div>
 
-                    <!-- SCHEDULE -->
-                    <p class="section-title">Schedule</p>
+                    <!-- QUANTITY -->
+                    <div>
 
-                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-6">
+                        <label class="block text-sm
+                            font-semibold text-[#504E76] mb-2">
 
-                        <div>
+                            Quantity
 
-                            <label class="field-label">
-                                <span class="label-dot"></span>
-                                Estimated Consumption
-                            </label>
-
-                            <div class="input-wrap">
-
-                                <i class='bx bx-calendar input-icon'></i>
-
-                                <input type="date" name="expired_date" class="input-style">
-
-                            </div>
-
-                        </div>
-
-                        <div>
-
-                            <label class="field-label">
-                                <span class="label-dot"></span>
-                                Pickup Time
-                            </label>
+                        </label>
 
                         <input
-                            type="date"
+                            type="number"
+                            name="quantity"
+                            placeholder="Total quantity"
+
+                            class="w-full p-3 rounded-2xl
+                            bg-white/70 border border-white/30
+                            focus:outline-none text-sm">
+
+                    </div>
+
+                    <!-- EXPIRED -->
+                    <div>
+
+                        <label class="block text-sm
+                            font-semibold text-[#504E76] mb-2">
+
+                            Estimated Consumption
+
+                        </label>
+
+                        <input
+                            type="datetime-local"
                             name="expired_date"
 
                             class="w-full p-3 rounded-2xl
@@ -542,47 +452,48 @@
 
                     </div>
 
-                    <!-- LOCATION -->
-                    <p class="section-title">Location & Media</p>
+                    <!-- LOCATION INPUT -->
+                    <div>
 
-                    <div class="grid grid-cols-1 xl:grid-cols-2 gap-6">
+                        <label class="block text-sm
+        font-semibold text-[#504E76] mb-2">
 
-                        <!-- LEFT -->
-                        <div class="space-y-6">
+                            Pickup Location
 
-                            <div>
+                        </label>
 
-                                <label class="field-label">
-                                    <span class="label-dot"></span>
-                                    Pickup Location
-                                </label>
+                        <div class="flex gap-2">
 
-                                <div class="flex gap-2">
+                            <input
+                                type="text"
+                                id="pickup_location"
+                                name="pickup_location"
+                                placeholder="Getting your location..."
 
-                                    <div class="input-wrap flex-1">
+                                class="w-full p-3 rounded-2xl
+            bg-white/70 border border-white/30
+            focus:outline-none text-sm">
 
-                                        <i class='bx bx-map input-icon'></i>
+                            <!-- BUTTON -->
+                            <button
+                                type="button"
+                                onclick="getLocation()"
 
-                                        <input type="text" id="pickup_location" name="pickup_location"
-                                            placeholder="Getting your location..." class="input-style">
+                                class="px-4 rounded-2xl
+            bg-[#504E76]
+            hover:bg-[#F1642E]
+            transition-all duration-300
+            text-white">
 
-                                    </div>
+                                <i class='bx bx-current-location'></i>
 
-                                    <button type="button" onclick="getLocation()"
-                                        class="w-12 h-12 min-w-[48px] rounded-2xl bg-[#504E76] hover:bg-[#F1642E] text-white flex items-center justify-center shadow-lg btn-hover">
+                            </button>
 
-                                        <i class='bx bx-current-location text-xl'></i>
+                        </div>
 
-                                    </button>
+                    </div>
 
-<<<<<<< HEAD
-                                </div>
 
-                            </div>
-
-                            <div class="glass rounded-[26px] p-2 soft-shadow smooth-card">
-                                <div id="map"></div>
-=======
                     <!-- BOTTOM SECTION -->
                     <div class="col-span-2 grid grid-cols-2 gap-5">
 
@@ -593,63 +504,75 @@
                                 id="map"
                                 class="w-full h-[230px]
             rounded-3xl overflow-hidden shadow-lg">
->>>>>>> 95c7bc3
                             </div>
 
                         </div>
 
-                        <!-- RIGHT -->
-                        <div class="flex flex-col gap-4">
+                        <!-- RIGHT SIDE -->
+                        <div class="flex flex-col justify-between h-[250px]">
 
-                            <!-- PHOTO -->
+                            <!-- FOOD PHOTO -->
                             <div>
 
-                                <label class="field-label">
-                                    <span class="label-dot"></span>
+                                <label class="block text-sm font-semibold text-[#504E76] mb-2">
+
                                     Food Photo
+
                                 </label>
 
-                                <label class="photo-upload block">
+                                <label
+                                    class="w-full h-[60px]
+                                        bg-white/70 border border-white/30
+                                        rounded-2xl flex items-center px-4
+                                        cursor-pointer hover:bg-white/90
+                                        transition-all duration-300">
 
-                                    <img id="photo-preview" class="photo-preview">
+                                    <i class='bx bx-image-add
+                                        text-2xl text-[#504E76] mr-3'></i>
 
-                                    <div id="photo-placeholder"
-                                        class="py-8 px-5 flex flex-col items-center gap-2">
+                                    <!-- FILE NAME -->
+                                    <span
+                                        id="file-name"
+                                        class="text-sm text-[#504E76]/70 truncate">
 
-                                        <div class="w-14 h-14 rounded-2xl bg-[#504E76]/10 flex items-center justify-center">
-                                            <i class='bx bx-image-add text-3xl text-[#504E76]'></i>
-                                        </div>
+                                        Upload food image
 
-                                        <p class="font-bold text-[#504E76] text-sm">
-                                            Upload Food Photo
-                                        </p>
+                                    </span>
 
-                                        <p class="text-xs text-[#504E76]/50">
-                                            JPG, PNG or JPEG
-                                        </p>
+                                    <input
+                                        type="file"
+                                        name="food_photo"
+                                        class="hidden"
 
-                                    </div>
-
-                                    <input type="file" name="food_photo" accept="image/*"
-                                        class="hidden" onchange="previewPhoto(this)">
+                                        onchange="
+                                            document.getElementById('file-name')
+                                            .innerText = this.files[0].name
+                                        ">
 
                                 </label>
 
                             </div>
 
                             <!-- DESCRIPTION -->
-                            <div>
+                            <div class="mt-4 flex-1">
 
-                                <label class="field-label">
-                                    <span class="label-dot"></span>
+                                <label class="block text-sm
+            font-semibold text-[#504E76] mb-2">
+
                                     Description
+
                                 </label>
 
                                 <textarea
                                     name="description"
-                                    placeholder="Describe the food..."
-                                    class="input-style resize-none"
-                                    style="height:110px; padding-left:18px;"></textarea>
+                                    placeholder="Food details..."
+
+                                    class="w-full h-[90px]
+                                    p-4 rounded-2xl
+                                    bg-white/70
+                                    border border-white/30
+                                    focus:outline-none
+                                    text-sm resize-none"></textarea>
 
                             </div>
 
@@ -658,16 +581,25 @@
                     </div>
 
                     <!-- BUTTON -->
-                    <button type="submit"
-                        class="w-full bg-gradient-to-r from-[#504E76] to-[#6B689B] hover:from-[#E7B96A] hover:to-[#E89A4A] text-white font-black py-4 rounded-2xl shadow-xl flex items-center justify-center gap-3 btn-hover">
+                    <div class="col-span-2">
 
-                        <i class='bx bx-donate-heart text-xl'></i>
+                        <button
+                            type="submit"
 
-                        Donate Now
+                            class="w-full bg-[#504E76]
+                            hover:bg-[#F1642E]
+                            transition-all duration-300
+                            text-white font-bold py-4
+                            rounded-2xl shadow-xl">
 
-                    </button>
+                            Donate Now
+
+                        </button>
+
+                    </div>
 
                 </form>
+
 
             </div>
 

@@ -14,14 +14,15 @@
     <link
         rel="stylesheet"
         href="https://cdn-uicons.flaticon.com/uicons-solid-rounded/css/uicons-solid-rounded.css">
-<<<<<<< HEAD
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 
     <style>
-        * { scroll-behavior: smooth; }
+        * {
+            scroll-behavior: smooth;
+        }
 
         body {
             font-family: 'Poppins', sans-serif;
@@ -43,16 +44,6 @@
 
         .gradient-text {
             background: linear-gradient(135deg, #504E76, #6E6AB3, #E8C067);
-=======
-
-    <style>
-        .gradient-text {
-            background: linear-gradient(135deg,
-                    #504E76,
-                    #6E6AB3,
-                    #E7B96A);
-
->>>>>>> 95c7bc3
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
@@ -62,10 +53,17 @@
         }
 
         @keyframes floating {
-<<<<<<< HEAD
-            0%   { transform: translateY(0px); }
-            50%  { transform: translateY(-8px); }
-            100% { transform: translateY(0px); }
+            0% {
+                transform: translateY(0px);
+            }
+
+            50% {
+                transform: translateY(-8px);
+            }
+
+            100% {
+                transform: translateY(0px);
+            }
         }
 
         .input-field {
@@ -82,7 +80,9 @@
             transition: all .3s ease;
         }
 
-        .input-field::placeholder { color: rgba(80, 78, 118, 0.35); }
+        .input-field::placeholder {
+            color: rgba(80, 78, 118, 0.35);
+        }
 
         .input-field:focus {
             border-color: #504E76;
@@ -108,44 +108,18 @@
             margin-bottom: 8px;
         }
 
-        .btn-hover { transition: all .3s ease; }
-        .btn-hover:hover { transform: scale(1.02); }
-
-        @keyframes fadeUp {
-            from { opacity: 0; transform: translateY(18px); }
-            to   { opacity: 1; transform: translateY(0); }
+        .btn-hover {
+            transition: all .3s ease;
         }
 
-        .fade-up { animation: fadeUp 0.5s cubic-bezier(.22,.68,0,1.1) both; }
-        .d1 { animation-delay: .05s; }
-        .d2 { animation-delay: .12s; }
-        .d3 { animation-delay: .19s; }
-
-        ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-thumb { background: #504E76; border-radius: 50px; }
-        ::-webkit-scrollbar-track { background: transparent; }
-=======
-            0% {
-                transform: translateY(0px);
-            }
-
-            50% {
-                transform: translateY(-7px);
-            }
-
-            100% {
-                transform: translateY(0px);
-            }
-        }
-
-        .fade-up {
-            animation: fadeUp .5s ease both;
+        .btn-hover:hover {
+            transform: scale(1.02);
         }
 
         @keyframes fadeUp {
             from {
                 opacity: 0;
-                transform: translateY(20px);
+                transform: translateY(18px);
             }
 
             to {
@@ -153,195 +127,189 @@
                 transform: translateY(0);
             }
         }
->>>>>>> 95c7bc3
+
+        .fade-up {
+            animation: fadeUp 0.5s cubic-bezier(.22, .68, 0, 1.1) both;
+        }
+
+        .d1 {
+            animation-delay: .05s;
+        }
+
+        .d2 {
+            animation-delay: .12s;
+        }
+
+        .d3 {
+            animation-delay: .19s;
+        }
+
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #504E76;
+            border-radius: 50px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
     </style>
 </head>
 
 <body class="bg-gradient-to-br from-[#FDF8E2] to-[#C4C3E3] min-h-screen">
 
-<div class="flex h-screen">
+    <div class="flex h-screen">
 
-    @include('supplier.sidebar')
+        @include('supplier.sidebar')
 
-<<<<<<< HEAD
-    <!-- MAIN -->
-    <main class="flex-1 overflow-y-auto px-4 sm:px-6 lg:px-8 py-6 lg:py-8 pt-16 lg:pt-8">
-=======
         <!-- MAIN -->
-        <main class="flex-1 overflow-y-auto px-8 py-6">
+        <main class="flex-1 overflow-y-auto px-4 sm:px-6 lg:px-8 py-6 lg:py-8 pt-16 lg:pt-8">
 
             <!-- HEADER -->
-            <div class="flex flex-col lg:flex-row justify-between lg:items-center gap-4 mb-7 fade-up d1">
-
-                <!-- LEFT -->
-                <div class="flex items-center gap-4">
-
-                    <div class="w-14 h-14 rounded-2xl
-                    bg-[#504E76] text-white
-                    flex items-center justify-center
-                    shadow-xl floating">
-
-                        <i class='bx bx-cog text-2xl'></i>
-
-                    </div>
-
-                    <div>
-
-                        <h1 class="text-2xl lg:text-4xl font-black gradient-text">
-                            Profile Settings
-                        </h1>
-
-                        <p class="text-[#504E76]/65 mt-1 text-sm lg:text-base">
-                            Update your personal information ⚙️
-                        </p>
-
-                    </div>
-
-                </div>
->>>>>>> 95c7bc3
-
-        <!-- HEADER -->
-        <div class="flex items-center gap-4 mb-7 fade-up">
-            <div class="w-13 h-13 w-12 h-12 lg:w-14 lg:h-14 rounded-2xl
+            <div class="flex items-center gap-4 mb-7 fade-up">
+                <div class="w-13 h-13 w-12 h-12 lg:w-14 lg:h-14 rounded-2xl
                         bg-[#504E76] text-white
                         flex items-center justify-center shadow-xl floating shrink-0">
-                <i class='bx bx-cog text-2xl'></i>
+                    <i class='bx bx-cog text-2xl'></i>
+                </div>
+                <div>
+                    <h1 class="text-2xl lg:text-3xl font-black gradient-text leading-tight">
+                        Profile Settings
+                    </h1>
+                    <p class="text-[#504E76]/60 text-sm mt-0.5">
+                        Update your personal information
+                    </p>
+                </div>
             </div>
-            <div>
-                <h1 class="text-2xl lg:text-3xl font-black gradient-text leading-tight">
-                    Profile Settings
-                </h1>
-                <p class="text-[#504E76]/60 text-sm mt-0.5">
-                    Update your personal information
-                </p>
-            </div>
-        </div>
 
-        <!-- ALERTS -->
-        @if(session('success'))
-        <div class="mb-5 fade-up d1 glass rounded-2xl px-5 py-3.5 soft-shadow
+            <!-- ALERTS -->
+            @if(session('success'))
+            <div class="mb-5 fade-up d1 glass rounded-2xl px-5 py-3.5 soft-shadow
                     border-l-4 border-green-500
                     flex items-center gap-3 text-green-700 text-sm font-medium">
-            <i class='bx bx-check-circle text-xl text-green-500'></i>
-            {{ session('success') }}
-        </div>
-        @endif
+                <i class='bx bx-check-circle text-xl text-green-500'></i>
+                {{ session('success') }}
+            </div>
+            @endif
 
-        @if(session('error'))
-        <div class="mb-5 fade-up d1 glass rounded-2xl px-5 py-3.5 soft-shadow
+            @if(session('error'))
+            <div class="mb-5 fade-up d1 glass rounded-2xl px-5 py-3.5 soft-shadow
                     border-l-4 border-red-400
                     flex items-center gap-3 text-red-600 text-sm font-medium">
-            <i class='bx bx-error-circle text-xl text-red-400'></i>
-            {{ session('error') }}
-        </div>
-        @endif
-
-        @if($errors->any())
-        <div class="mb-5 fade-up d1 glass rounded-2xl px-5 py-4 soft-shadow
-                    border-l-4 border-red-400 text-red-600 text-sm">
-            <div class="flex items-center gap-2 font-bold mb-2">
-                <i class='bx bx-error-circle text-lg'></i> Please fix the following:
+                <i class='bx bx-error-circle text-xl text-red-400'></i>
+                {{ session('error') }}
             </div>
-            <ul class="list-disc pl-5 space-y-1">
-                @foreach($errors->all() as $error)
-                <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
-        @endif
+            @endif
 
-        <div class="max-w-5xl space-y-5">
+            @if($errors->any())
+            <div class="mb-5 fade-up d1 glass rounded-2xl px-5 py-4 soft-shadow
+                    border-l-4 border-red-400 text-red-600 text-sm">
+                <div class="flex items-center gap-2 font-bold mb-2">
+                    <i class='bx bx-error-circle text-lg'></i> Please fix the following:
+                </div>
+                <ul class="list-disc pl-5 space-y-1">
+                    @foreach($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+            @endif
 
-            <!-- ====== PROFILE FORM ====== -->
-            <div class="glass rounded-3xl p-6 lg:p-8 soft-shadow fade-up d1">
+            <div class="max-w-5xl space-y-5">
 
-                <form action="/settings/update" method="POST" enctype="multipart/form-data">
-                    @csrf
-                    @method('POST')
+                <!-- ====== PROFILE FORM ====== -->
+                <div class="glass rounded-3xl p-6 lg:p-8 soft-shadow fade-up d1">
 
-                    <!-- PROFILE TOP -->
-                    <div class="flex flex-col sm:flex-row items-center sm:items-start gap-5 mb-8
+                    <form action="/settings/update" method="POST" enctype="multipart/form-data">
+                        @csrf
+                        @method('POST')
+
+                        <!-- PROFILE TOP -->
+                        <div class="flex flex-col sm:flex-row items-center sm:items-start gap-5 mb-8
                                 pb-8 border-b border-white/30">
 
-                        <!-- AVATAR -->
-                        <div class="relative shrink-0">
-                            <img
-                                src="{{ $user->profile_photo
+                            <!-- AVATAR -->
+                            <div class="relative shrink-0">
+                                <img
+                                    src="{{ $user->profile_photo
                                     ? asset($user->profile_photo)
                                     : 'https://ui-avatars.com/api/?name=' . urlencode($user->username) . '&background=504E76&color=fff&bold=true&size=128' }}"
-                                onerror="this.src='https://ui-avatars.com/api/?name={{ urlencode($user->username) }}&background=504E76&color=fff&bold=true&size=128'"
-                                class="w-24 h-24 lg:w-28 lg:h-28 rounded-2xl object-cover border-4 border-white shadow-xl">
-                            <label class="absolute -bottom-2 -right-2
+                                    onerror="this.src='https://ui-avatars.com/api/?name={{ urlencode($user->username) }}&background=504E76&color=fff&bold=true&size=128'"
+                                    class="w-24 h-24 lg:w-28 lg:h-28 rounded-2xl object-cover border-4 border-white shadow-xl">
+                                <label class="absolute -bottom-2 -right-2
                                           w-9 h-9 rounded-xl
                                           bg-[#F1642E] hover:bg-[#d9531f]
                                           transition-all duration-300
                                           flex items-center justify-center
                                           text-white cursor-pointer shadow-lg">
-                                <i class='bx bx-camera text-base'></i>
-                                <input type="file" name="profile_photo" class="hidden">
-                            </label>
-                        </div>
+                                    <i class='bx bx-camera text-base'></i>
+                                    <input type="file" name="profile_photo" class="hidden">
+                                </label>
+                            </div>
 
-                        <!-- USER INFO -->
-                        <div class="text-center sm:text-left">
-                            <h2 class="text-2xl lg:text-3xl font-black text-[#504E76]">
-                                {{ $user->username }}
-                            </h2>
-                            <p class="text-[#504E76]/55 text-sm mt-0.5">{{ $user->email }}</p>
-                            <div class="mt-3 inline-flex items-center gap-2
+                            <!-- USER INFO -->
+                            <div class="text-center sm:text-left">
+                                <h2 class="text-2xl lg:text-3xl font-black text-[#504E76]">
+                                    {{ $user->username }}
+                                </h2>
+                                <p class="text-[#504E76]/55 text-sm mt-0.5">{{ $user->email }}</p>
+                                <div class="mt-3 inline-flex items-center gap-2
                                         bg-[#504E76]/10 text-[#504E76]
                                         px-4 py-1.5 rounded-xl text-xs font-bold
                                         tracking-wide uppercase">
-                                <i class='bx bx-user text-sm'></i>
-                                Supplier Account
+                                    <i class='bx bx-user text-sm'></i>
+                                    Supplier Account
+                                </div>
                             </div>
+
                         </div>
 
-                    </div>
+                        <!-- INPUT GRID -->
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-5 mb-7">
 
-                    <!-- INPUT GRID -->
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-5 mb-7">
+                            <div>
+                                <label class="field-label">Username</label>
+                                <input type="text" name="username" value="{{ $user->username }}"
+                                    class="input-field">
+                            </div>
 
-                        <div>
-                            <label class="field-label">Username</label>
-                            <input type="text" name="username" value="{{ $user->username }}"
-                                   class="input-field">
-                        </div>
+                            <div>
+                                <label class="field-label">Email Address</label>
+                                <input type="email" name="email" value="{{ $user->email }}"
+                                    class="input-field">
+                            </div>
 
-                        <div>
-                            <label class="field-label">Email Address</label>
-                            <input type="email" name="email" value="{{ $user->email }}"
-                                   class="input-field">
-                        </div>
+                            <div>
+                                <label class="field-label">Phone Number</label>
+                                <input type="text" name="no_telp" value="{{ $user->no_telp }}"
+                                    placeholder="e.g. 08123456789"
+                                    class="input-field">
+                            </div>
 
-                        <div>
-                            <label class="field-label">Phone Number</label>
-                            <input type="text" name="no_telp" value="{{ $user->no_telp }}"
-                                   placeholder="e.g. 08123456789"
-                                   class="input-field">
-                        </div>
+                            <div>
+                                <label class="field-label">Account Role</label>
+                                <input type="text" value="{{ ucfirst($user->role) }}"
+                                    disabled class="input-field">
+                            </div>
 
-                        <div>
-                            <label class="field-label">Account Role</label>
-                            <input type="text" value="{{ ucfirst($user->role) }}"
-                                   disabled class="input-field">
-                        </div>
+                            <!-- STORE NAME -->
+                            <div>
 
-                        <!-- STORE NAME -->
-                        <div>
+                                <label class="block text-sm font-semibold text-[#504E76] mb-2">
 
-                            <label class="block text-sm font-semibold text-[#504E76] mb-2">
+                                    Store Name
 
-                                Store Name
+                                </label>
 
-                            </label>
+                                <input
+                                    type="text"
+                                    name="nama_toko"
+                                    value="{{ $supplier->nama_toko }}"
 
-                            <input
-                                type="text"
-                                name="nama_toko"
-                                value="{{ $supplier->nama_toko }}"
-
-                                class="w-full h-[60px]
+                                    class="w-full h-[60px]
         px-5 rounded-2xl
         bg-white/70
         border border-white/30
@@ -349,33 +317,33 @@
         focus:ring-2
         focus:ring-[#504E76]/30">
 
-                        </div>
+                            </div>
 
-                        <!-- STORE ADDRESS -->
-                        <div>
+                            <!-- STORE ADDRESS -->
+                            <div>
 
-                            <label class="block text-sm font-semibold text-[#504E76] mb-2">
+                                <label class="block text-sm font-semibold text-[#504E76] mb-2">
 
-                                Store Address
+                                    Store Address
 
-                            </label>
+                                </label>
 
-                            <!-- INPUT + BUTTON -->
-                            <div class="flex gap-3">
+                                <!-- INPUT + BUTTON -->
+                                <div class="flex gap-3">
 
-                                <!-- ADDRESS -->
-                                <input
-                                    type="text"
+                                    <!-- ADDRESS -->
+                                    <input
+                                        type="text"
 
-                                    id="alamat_toko"
+                                        id="alamat_toko"
 
-                                    name="alamat_toko"
+                                        name="alamat_toko"
 
-                                    value="{{ $supplier->alamat_toko }}"
+                                        value="{{ $supplier->alamat_toko }}"
 
-                                    placeholder="Click detect location"
+                                        placeholder="Click detect location"
 
-                                    class="flex-1 h-[60px]
+                                        class="flex-1 h-[60px]
             px-5 rounded-2xl
             bg-white/70
             border border-white/30
@@ -383,15 +351,15 @@
             focus:ring-2
             focus:ring-[#504E76]/30">
 
-                                <!-- BUTTON -->
-                                <button
-                                    type="button"
+                                    <!-- BUTTON -->
+                                    <button
+                                        type="button"
 
-                                    id="locationButton"
+                                        id="locationButton"
 
-                                    onclick="getLocation()"
+                                        onclick="getLocation()"
 
-                                    class="h-[60px]
+                                        class="h-[60px]
             px-6 rounded-2xl
             bg-[#504E76]
             hover:bg-[#F1642E]
@@ -400,270 +368,129 @@
             flex items-center gap-2
             whitespace-nowrap">
 
-                                    <i class="fi fi-sr-marker"></i>
+                                        <i class="fi fi-sr-marker"></i>
 
-                                    Detect
+                                        Detect
 
-                                </button>
+                                    </button>
+
+                                </div>
+
+                                <!-- LOADING -->
+                                <p
+                                    id="locationLoading"
+
+                                    class="hidden text-sm text-[#504E76]/60 mt-3">
+
+                                </p>
+
+                                <!-- LAT LONG -->
+                                <input
+                                    type="hidden"
+                                    id="latitude"
+                                    name="latitude"
+                                    value="{{ $supplier->latitude }}">
+
+                                <input
+                                    type="hidden"
+                                    id="longitude"
+                                    name="longitude"
+                                    value="{{ $supplier->longitude }}">
 
                             </div>
 
-                            <!-- LOADING -->
-                            <p
-                                id="locationLoading"
-
-                                class="hidden text-sm text-[#504E76]/60 mt-3">
-
-                            </p>
-
-                            <!-- LAT LONG -->
-                            <input
-                                type="hidden"
-                                id="latitude"
-                                name="latitude"
-                                value="{{ $supplier->latitude }}">
-
-                            <input
-                                type="hidden"
-                                id="longitude"
-                                name="longitude"
-                                value="{{ $supplier->longitude }}">
-
                         </div>
 
-                    </div>
-
-                    <!-- SAVE BUTTON -->
-                    <div class="flex justify-end">
-                        <button type="submit"
+                        <!-- SAVE BUTTON -->
+                        <div class="flex justify-end">
+                            <button type="submit"
                                 class="bg-[#504E76] hover:bg-[#F1642E]
                                        transition-all duration-300 btn-hover
                                        text-white font-bold
                                        px-8 py-3.5 rounded-2xl shadow-xl
                                        flex items-center gap-2.5">
-                            <i class='bx bx-save text-lg'></i>
-                            Save Changes
-                        </button>
-<<<<<<< HEAD
-=======
-
-                    </div>
-
-                </form>
-
-                <!-- PASSWORD FORM -->
-                <form
-                    action="/settings/password"
-                    method="POST"
-
-                    class="bg-white/30
-        backdrop-blur-2xl
-        border border-white/20
-        rounded-[35px]
-        p-10 shadow-2xl">
-
-                    @csrf
-
-                    <!-- TITLE -->
-                    <div class="flex items-center gap-4 mb-8">
-
-                        <div class="w-14 h-14 rounded-2xl
-            bg-[#504E76]
-            text-white
-            flex items-center justify-center">
-
-                            <i class='bx bx-lock-alt text-2xl'></i>
-
+                                <i class='bx bx-save text-lg'></i>
+                                Save Changes
+                            </button>
                         </div>
 
-                        <div>
+                    </form>
 
+                </div>
+
+                <!-- ====== PASSWORD FORM ====== -->
+                <div class="glass rounded-3xl p-6 lg:p-8 soft-shadow fade-up d2">
+
+                    <!-- TITLE -->
+                    <div class="flex items-center gap-4 mb-7 pb-6 border-b border-white/30">
+                        <div class="w-12 h-12 rounded-2xl bg-[#504E76] text-white
+                                flex items-center justify-center shadow-lg shrink-0">
+                            <i class='bx bx-lock-alt text-xl'></i>
+                        </div>
+                        <div>
                             <h1 class="text-2xl lg:text-4xl font-black gradient-text">
+
                                 Change Password
+
                             </h1>
 
                             <p class="text-[#504E76]/65 mt-1 text-sm lg:text-base">
                                 Update your account password securely 🔒
                             </p>
-
                         </div>
-
                     </div>
 
-                    <!-- INPUT -->
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <form action="/settings/password" method="POST">
+                        @csrf
 
-                        <!-- CURRENT -->
-                        <div>
+                        <!-- INPUT ROW -->
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-5 mb-7">
 
-                            <label class="block text-sm
-                font-semibold text-[#504E76] mb-2">
+                            <div>
+                                <label class="field-label">Current Password</label>
+                                <input type="password" name="current_password"
+                                    placeholder="Enter current password"
+                                    class="input-field">
+                            </div>
 
-                                Current Password
+                            <div>
+                                <label class="field-label">New Password</label>
+                                <input type="password" name="new_password"
+                                    placeholder="Enter new password"
+                                    class="input-field">
+                            </div>
 
-                            </label>
+                            <div>
+                                <label class="field-label">Confirm Password</label>
+                                <input type="password" name="new_password_confirmation"
+                                    placeholder="Confirm new password"
+                                    class="input-field">
+                            </div>
 
-                            <input
-                                type="password"
-                                name="current_password"
-
-                                placeholder="Current password"
-
-                                class="w-full h-[60px]
-                    px-5 rounded-2xl
-                    bg-white/70
-                    border border-white/30
-                    focus:outline-none
-                    focus:ring-2
-                    focus:ring-[#504E76]/30">
                         </div>
 
-                        <!-- NEW -->
-                        <div>
-
-                            <label class="block text-sm
-                font-semibold text-[#504E76] mb-2">
-
-                                New Password
-
-                            </label>
-
-                            <input
-                                type="password"
-                                name="new_password"
-
-                                placeholder="New password"
-
-                                class="w-full h-[60px]
-                    px-5 rounded-2xl
-                    bg-white/70
-                    border border-white/30
-                    focus:outline-none
-                    focus:ring-2
-                    focus:ring-[#504E76]/30">
-                        </div>
-
-                        <!-- CONFIRM -->
-                        <div>
-
-                            <label class="block text-sm
-                font-semibold text-[#504E76] mb-2">
-
-                                Confirm Password
-
-                            </label>
-
-                            <input
-                                type="password"
-                                name="new_password_confirmation"
-
-                                placeholder="Confirm password"
-
-                                class="w-full h-[60px]
-                    px-5 rounded-2xl
-                    bg-white/70
-                    border border-white/30
-                    focus:outline-none
-                    focus:ring-2
-                    focus:ring-[#504E76]/30">
-                        </div>
-
-                    </div>
-
-                    <!-- BUTTON -->
-                    <div class="flex justify-end mt-8">
-
-                        <button
-                            type="submit"
-
-                            class="bg-[#F1642E]
-                hover:bg-[#d9531f]
-                transition-all duration-300
-                text-white font-bold
-                px-10 py-4
-                rounded-2xl shadow-xl">
-
-                            Update Password
-
-                        </button>
-
->>>>>>> 95c7bc3
-                    </div>
-
-                </form>
-
-            </div>
-
-            <!-- ====== PASSWORD FORM ====== -->
-            <div class="glass rounded-3xl p-6 lg:p-8 soft-shadow fade-up d2">
-
-                <!-- TITLE -->
-                <div class="flex items-center gap-4 mb-7 pb-6 border-b border-white/30">
-                    <div class="w-12 h-12 rounded-2xl bg-[#504E76] text-white
-                                flex items-center justify-center shadow-lg shrink-0">
-                        <i class='bx bx-lock-alt text-xl'></i>
-                    </div>
-                    <div>
-                        <h2 class="text-xl lg:text-2xl font-black text-[#504E76]">
-                            Change Password
-                        </h2>
-                        <p class="text-[#504E76]/55 text-sm mt-0.5">
-                            Update your account password securely
-                        </p>
-                    </div>
-                </div>
-
-                <form action="/settings/password" method="POST">
-                    @csrf
-
-                    <!-- INPUT ROW -->
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-5 mb-7">
-
-                        <div>
-                            <label class="field-label">Current Password</label>
-                            <input type="password" name="current_password"
-                                   placeholder="Enter current password"
-                                   class="input-field">
-                        </div>
-
-                        <div>
-                            <label class="field-label">New Password</label>
-                            <input type="password" name="new_password"
-                                   placeholder="Enter new password"
-                                   class="input-field">
-                        </div>
-
-                        <div>
-                            <label class="field-label">Confirm Password</label>
-                            <input type="password" name="new_password_confirmation"
-                                   placeholder="Confirm new password"
-                                   class="input-field">
-                        </div>
-
-                    </div>
-
-                    <!-- UPDATE BUTTON -->
-                    <div class="flex justify-end">
-                        <button type="submit"
+                        <!-- UPDATE BUTTON -->
+                        <div class="flex justify-end">
+                            <button type="submit"
                                 class="bg-[#F1642E] hover:bg-[#d9531f]
                                        transition-all duration-300 btn-hover
                                        text-white font-bold
                                        px-8 py-3.5 rounded-2xl shadow-xl
                                        flex items-center gap-2.5">
-                            <i class='bx bx-lock-open-alt text-lg'></i>
-                            Update Password
-                        </button>
-                    </div>
+                                <i class='bx bx-lock-open-alt text-lg'></i>
+                                Update Password
+                            </button>
+                        </div>
 
-                </form>
+                    </form>
+
+                </div>
 
             </div>
 
-        </div>
+        </main>
 
-    </main>
-
-</div>
+    </div>
 
     <script>
         async function getLocation() {
@@ -767,4 +594,5 @@
     </script>
 
 </body>
+
 </html>
