@@ -13,6 +13,64 @@
 
     <!-- BOXICONS -->
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+
+    <style>
+        #sidebar::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        #sidebar::-webkit-scrollbar-thumb {
+            background: #504E76;
+            border-radius: 20px;
+        }
+
+        .nav-link,
+        .settings-btn,
+        .logout-btn,
+        .menu-btn-interactive,
+        .logo-interactive {
+            cursor: pointer;
+        }
+
+        .nav-link:not(.active-link):hover {
+            transform: translateX(5px);
+            background: rgba(255, 255, 255, 0.40) !important;
+            box-shadow: 0 8px 24px rgba(80, 78, 118, 0.10);
+        }
+
+        .nav-link:not(.active-link):hover .nav-icon {
+            background: #504E76 !important;
+            transform: scale(1.08) rotate(-6deg);
+        }
+
+        .nav-link:not(.active-link):hover .nav-icon i {
+            color: white !important;
+        }
+
+        .active-link .nav-dot {
+            background: rgba(255, 255, 255, 0.60) !important;
+        }
+
+        .logo-interactive:hover .mascot-img {
+            transform: rotate(-8deg) scale(1.10);
+        }
+
+        .mascot-img {
+            transition: all .4s ease;
+        }
+
+        .settings-btn:hover {
+            transform: scale(1.05);
+        }
+
+        .settings-btn:hover .settings-icon {
+            transform: rotate(90deg);
+        }
+
+        .logout-btn:hover {
+            transform: scale(1.05);
+        }
+    </style>
 </head>
 
 <body class="bg-gradient-to-br from-[#FDF8E2] to-[#C4C3E3] min-h-screen overflow-hidden">
@@ -39,50 +97,47 @@
         <!-- SIDEBAR -->
         <!-- SIDEBAR -->
         <aside
-    id="sidebar"
+            id="sidebar"
+            class="fixed lg:relative
+           -translate-x-full lg:translate-x-0
+           top-0 left-0
+           w-[260px] lg:w-[280px]
+           h-screen
+           overflow-y-auto
+           bg-white/20 backdrop-blur-2xl
+           border-r border-white/20
+           p-6 lg:p-8
+           flex flex-col
+           transition-transform duration-500
+           z-40">
 
-    class="fixed lg:relative
+            <!-- TOP -->
+            <div>
 
-    -translate-x-full lg:translate-x-0
+                <!-- LOGO -->
+                <div class="mb-10 lg:mb-16">
 
-    top-0 left-0
-
-    w-[260px]
-    h-screen
-
-    bg-white/20
-    backdrop-blur-2xl
-
-    border-r border-white/20
-
-    px-5 py-6
-
-    flex flex-col justify-between
-
-    transition-transform duration-500
-
-    z-40">
-
-    <div>
-
-        <!-- LOGO -->
-        <div class="mb-16">
-
-                    <div class="flex items-center">
+                    <div class="flex items-center logo-interactive cursor-pointer">
 
                         <img
                             src="{{ asset('images/mealbridge-mascot.png') }}"
                             alt="MealBridge"
-                            class="w-[70px] drop-shadow-xl">
+
+                            class="w-[55px] lg:w-[70px] drop-shadow-xl mascot-img">
 
                         <div>
 
                             <h1 class="text-2xl font-black text-[#504E76]">
+
                                 MealBridge
+
                             </h1>
 
-                            <p class="text-[10px] tracking-[1px] uppercase text-[#504E76]/70">
+                            <p class="text-[10px] tracking-[3px]
+                              uppercase text-[#504E76]/70 mt-1">
+
                                 Community Panel
+
                             </p>
 
                         </div>
@@ -91,221 +146,206 @@
 
                 </div>
 
-        <!-- MENU -->
-        <nav class="space-y-3">
+                <!-- MENU -->
+                <nav class="space-y-2 lg:space-y-4">
 
-            <!-- ITEM -->
-            <a href="/dashboard-community"
-                class="flex items-center gap-4
+                    <!-- DASHBOARD -->
+                    <a href="/dashboard-community"
+                        class="nav-link flex items-center gap-3 lg:gap-4
+                      {{ request()->is('dashboard-community') ? 'bg-[#504E76] text-white shadow-lg active-link' : 'hover:bg-white/30 text-[#504E76]' }}
+                      transition-all duration-300
+                      p-3 lg:p-4 rounded-2xl group">
 
-                {{ request()->is('dashboard-community')
-                ? 'bg-[#504E76] text-white shadow-xl'
-                : 'hover:bg-white/30 text-[#504E76]' }}
+                        <div class="nav-icon w-10 h-10 lg:w-12 lg:h-12 rounded-2xl
+                            {{ request()->is('dashboard-community') ? 'bg-white/20' : 'bg-[#FDF8E2]' }}
+                            flex items-center justify-center shrink-0 transition-all duration-300">
 
-                transition-all duration-300
-                p-4 rounded-[24px]">
+                            <i class='bx bx-home-alt-2 text-xl lg:text-2xl'></i>
 
-                <div class="w-11 h-11 rounded-2xl
+                        </div>
 
-                {{ request()->is('dashboard-community')
-                ? 'bg-white/20'
-                : 'bg-[#FDF8E2]' }}
+                        <div>
 
-                flex items-center justify-center shrink-0">
+                            <h1 class="font-semibold text-sm lg:text-base">
 
-                    <i class='bx bx-home-alt-2 text-[24px] leading-none'></i>
+                                Dashboard
+
+                            </h1>
+
+                            <p class="text-xs
+                              {{ request()->is('dashboard-community') ? 'text-white/70' : 'text-[#504E76]/60' }}">
+
+                                Community overview
+
+                            </p>
+
+                        </div>
+
+                        <div class="nav-dot ml-auto w-2 h-2 rounded-full"></div>
+
+                    </a>
+
+                    <!-- DONATIONS -->
+                    <a href="/available-donations"
+                        class="nav-link flex items-center gap-3 lg:gap-4
+                      {{ request()->is('available-donations') ? 'bg-[#504E76] text-white shadow-lg active-link' : 'hover:bg-white/30 text-[#504E76]' }}
+                      transition-all duration-300
+                      p-3 lg:p-4 rounded-2xl group">
+
+                        <div class="nav-icon w-10 h-10 lg:w-12 lg:h-12 rounded-2xl
+                            {{ request()->is('available-donations') ? 'bg-white/20' : 'bg-[#FDF8E2]' }}
+                            flex items-center justify-center shrink-0 transition-all duration-300">
+
+                            <i class='bx bx-food-menu text-xl lg:text-2xl'></i>
+
+                        </div>
+
+                        <div>
+
+                            <h1 class="font-semibold text-sm lg:text-base">
+
+                                Donations
+
+                            </h1>
+
+                            <p class="text-xs
+                              {{ request()->is('available-donations') ? 'text-white/70' : 'text-[#504E76]/60' }}">
+
+                                Food donations
+
+                            </p>
+
+                        </div>
+
+                        <div class="nav-dot ml-auto w-2 h-2 rounded-full"></div>
+
+                    </a>
+
+                    <!-- HISTORY -->
+                    <a href="/distribution-history"
+                        class="nav-link flex items-center gap-3 lg:gap-4
+                      {{ request()->is('distribution-history') ? 'bg-[#504E76] text-white shadow-lg active-link' : 'hover:bg-white/30 text-[#504E76]' }}
+                      transition-all duration-300
+                      p-3 lg:p-4 rounded-2xl group">
+
+                        <div class="nav-icon w-10 h-10 lg:w-12 lg:h-12 rounded-2xl
+                            {{ request()->is('distribution-history') ? 'bg-white/20' : 'bg-[#FDF8E2]' }}
+                            flex items-center justify-center shrink-0 transition-all duration-300">
+
+                            <i class='bx bx-history text-xl lg:text-2xl'></i>
+
+                        </div>
+
+                        <div>
+
+                            <h1 class="font-semibold text-sm lg:text-base">
+
+                                History
+
+                            </h1>
+
+                            <p class="text-xs
+                              {{ request()->is('distribution-history') ? 'text-white/70' : 'text-[#504E76]/60' }}">
+
+                                Distribution activity
+
+                            </p>
+
+                        </div>
+
+                        <div class="nav-dot ml-auto w-2 h-2 rounded-full"></div>
+
+                    </a>
+
+                    <!-- NOTIFICATIONS -->
+                    <a href="/community-notifications"
+                        class="nav-link flex items-center gap-3 lg:gap-4
+                      {{ request()->is('community-notifications') ? 'bg-[#504E76] text-white shadow-lg active-link' : 'hover:bg-white/30 text-[#504E76]' }}
+                      transition-all duration-300
+                      p-3 lg:p-4 rounded-2xl group">
+
+                        <div class="nav-icon w-10 h-10 lg:w-12 lg:h-12 rounded-2xl
+                            {{ request()->is('community-notifications') ? 'bg-white/20' : 'bg-[#FDF8E2]' }}
+                            flex items-center justify-center shrink-0 transition-all duration-300">
+
+                            <i class='bx bx-bell text-xl lg:text-2xl'></i>
+
+                        </div>
+
+                        <div>
+
+                            <h1 class="font-semibold text-sm lg:text-base">
+
+                                Notifications
+
+                            </h1>
+
+                            <p class="text-xs
+                              {{ request()->is('community-notifications') ? 'text-white/70' : 'text-[#504E76]/60' }}">
+
+                                Alerts & updates
+
+                            </p>
+
+                        </div>
+
+                        <div class="nav-dot ml-auto w-2 h-2 rounded-full"></div>
+
+                    </a>
+
+                </nav>
+
+            </div>
+
+            <!-- BOTTOM -->
+            <div class="mt-auto pt-8 pb-2">
+
+                <div class="grid grid-cols-2 gap-4">
+
+                    <!-- SETTINGS -->
+                    <a href="/community-settings"
+                        class="settings-btn
+                      h-[72px]
+                      rounded-3xl
+                      bg-white/50
+                      hover:bg-white/70
+                      flex items-center justify-center
+                      text-[#504E76]
+                      shadow-xl
+                      transition-all duration-300">
+
+                        <i class='bx bx-cog text-3xl settings-icon'></i>
+
+                    </a>
+
+                    <!-- LOGOUT -->
+                    <form action="/logout" method="POST">
+
+                        @csrf
+
+                        <button
+                            type="submit"
+                            class="logout-btn
+                           w-full h-[72px]
+                           rounded-3xl
+                           bg-[#F1642E]
+                           hover:bg-[#504E76]
+                           text-white
+                           shadow-xl
+                           flex items-center justify-center
+                           transition-all duration-300">
+
+                            <i class='bx bx-log-out text-3xl logout-icon'></i>
+
+                        </button>
+
+                    </form>
 
                 </div>
 
-                <div>
+            </div>
 
-                    <h1 class="font-semibold text-[16px] leading-none">
-                        Dashboard
-                    </h1>
-
-                    <p class="text-xs mt-1
-
-                    {{ request()->is('dashboard-community')
-                    ? 'text-white/70'
-                    : 'text-[#504E76]/60' }}">
-
-                        Community overview
-
-                    </p>
-
-                </div>
-
-            </a>
-
-            <!-- DONATIONS -->
-            <a href="/available-donations"
-                class="flex items-center gap-4
-
-                {{ request()->is('available-donations')
-                ? 'bg-[#504E76] text-white shadow-xl'
-                : 'hover:bg-white/30 text-[#504E76]' }}
-
-                transition-all duration-300
-                p-4 rounded-[24px]">
-
-                <div class="w-11 h-11 rounded-2xl
-
-                {{ request()->is('available-donations')
-                ? 'bg-white/20'
-                : 'bg-[#FDF8E2]' }}
-
-                flex items-center justify-center shrink-0">
-
-                    <i class='bx bx-food-menu text-[24px]'></i>
-
-                </div>
-
-                <div>
-
-                    <h1 class="font-semibold text-[16px] leading-none">
-                        Donations
-                    </h1>
-
-                    <p class="text-xs mt-1
-
-                    {{ request()->is('available-donations')
-                    ? 'text-white/70'
-                    : 'text-[#504E76]/60' }}">
-
-                        Food donations
-
-                    </p>
-
-                </div>
-
-            </a>
-
-            <!-- HISTORY -->
-            <a href="/distribution-history"
-                class="flex items-center gap-4
-
-                {{ request()->is('distribution-history')
-                ? 'bg-[#504E76] text-white shadow-xl'
-                : 'hover:bg-white/30 text-[#504E76]' }}
-
-                transition-all duration-300
-                p-4 rounded-[24px]">
-
-                <div class="w-11 h-11 rounded-2xl
-
-                {{ request()->is('distribution-history')
-                ? 'bg-white/20'
-                : 'bg-[#FDF8E2]' }}
-
-                flex items-center justify-center shrink-0">
-
-                    <i class='bx bx-history text-[24px]'></i>
-
-                </div>
-
-                <div>
-
-                    <h1 class="font-semibold text-[16px] leading-none">
-                        History
-                    </h1>
-
-                    <p class="text-xs mt-1
-
-                    {{ request()->is('distribution-history')
-                    ? 'text-white/70'
-                    : 'text-[#504E76]/60' }}">
-
-                        Distribution records
-
-                    </p>
-
-                </div>
-
-            </a>
-
-            <!-- NOTIFICATIONS -->
-            <a href="/community-notifications"
-                class="flex items-center gap-4
-
-                {{ request()->is('community-notifications')
-                ? 'bg-[#504E76] text-white shadow-xl'
-                : 'hover:bg-white/30 text-[#504E76]' }}
-
-                transition-all duration-300
-                p-4 rounded-[24px]">
-
-                <div class="w-11 h-11 rounded-2xl
-
-                {{ request()->is('community-notifications')
-                ? 'bg-white/20'
-                : 'bg-[#FDF8E2]' }}
-
-                flex items-center justify-center shrink-0">
-
-                    <i class='bx bx-bell text-[24px]'></i>
-
-                </div>
-
-                <div>
-
-                    <h1 class="font-semibold text-[16px] leading-none">
-                        Notifications
-                    </h1>
-
-                    <p class="text-xs mt-1
-
-                    {{ request()->is('community-notifications')
-                    ? 'text-white/70'
-                    : 'text-[#504E76]/60' }}">
-
-                        Alerts & updates
-
-                    </p>
-
-                </div>
-
-            </a>
-
-        </nav>
-
-    </div>
-
-    <!-- BOTTOM -->
-    <div class="grid grid-cols-2 gap-3">
-
-        <a href="/community-settings"
-            class="bg-white/30 hover:bg-white/50
-            transition-all duration-300
-            text-[#504E76]
-            p-4 rounded-2xl
-            flex items-center justify-center
-            shadow-lg">
-
-            <i class='bx bx-cog text-2xl'></i>
-
-        </a>
-
-        <form action="/logout" method="POST">
-
-            @csrf
-
-            <button
-                class="w-full bg-[#F1642E]
-                hover:bg-[#504E76]
-                transition-all duration-300
-                text-white p-4 rounded-2xl
-                flex items-center justify-center
-                shadow-xl">
-
-                <i class='bx bx-log-out text-2xl'></i>
-
-            </button>
-
-        </form>
-
-    </div>
-
-</aside>
+        </aside>
 
     </div>
 

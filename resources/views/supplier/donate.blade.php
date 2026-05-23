@@ -3,23 +3,92 @@
 
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Donate Food – MealBridge</title>
 
-    <meta name="viewport"
-        content="width=device-width, initial-scale=1.0">
-
-    <title>Donate Food</title>
-
+    <!-- Tailwind -->
     <script src="https://cdn.tailwindcss.com"></script>
 
-    <!-- LEAFLET CSS -->
-    <link
-        rel="stylesheet"
-        href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <!-- Boxicons -->
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 
+    <!-- Leaflet -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
 
-    <link
-        href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css'
-        rel='stylesheet'>
+    <!-- Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+
+    <style>
+        * {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            overflow-x: hidden;
+        }
+
+        .glass {
+            background: rgba(255, 255, 255, .35);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+            border: 1px solid rgba(255, 255, 255, .25);
+        }
+
+        .soft-shadow {
+            box-shadow:
+                0 12px 35px rgba(80, 78, 118, .10),
+                0 5px 10px rgba(0, 0, 0, .03);
+        }
+
+        .smooth-card {
+            transition: .35s ease;
+        }
+
+        .smooth-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 25px 40px rgba(80, 78, 118, .16);
+        }
+
+        .btn-hover {
+            transition: .3s ease;
+        }
+
+        .btn-hover:hover {
+            transform: scale(1.02);
+            box-shadow: 0 15px 30px rgba(80, 78, 118, .20);
+        }
+
+        .btn-hover:active {
+            transform: scale(.97);
+        }
+
+        .floating {
+            animation: floating 4s ease-in-out infinite;
+        }
+
+        @keyframes floating {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-8px);
+            }
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, #504E76, #6E6AB3, #E8C067);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+    </style>
 </head>
 
 <body class="bg-gradient-to-br from-[#FDF8E2] to-[#C4C3E3] h-screen overflow-hidden">
@@ -33,25 +102,45 @@
         <main class="flex-1 overflow-hidden px-8 py-5 pt-8">
 
             <!-- HEADER -->
-            <div class="flex items-center gap-4 mb-5">
+            <div class="flex flex-col lg:flex-row justify-between lg:items-center gap-4 mb-7 fade-up d1">
 
-                <div class="w-14 h-14 rounded-2xl
-                    bg-[#504E76] text-white
-                    flex items-center justify-center shadow-xl">
+                <div class="flex items-center gap-4">
 
-                    <i class='bx bx-donate-heart text-2xl'></i>
+                    <div class="w-14 h-14 rounded-2xl bg-[#504E76] text-white flex items-center justify-center shadow-xl floating">
+                        <i class='bx bx-donate-heart text-2xl'></i>
+                    </div>
+
+                    <div>
+
+                        <h1 class="text-2xl lg:text-4xl font-black gradient-text">
+                            Donate Food
+                        </h1>
+
+                        <p class="text-[#504E76]/65 mt-1 text-sm lg:text-base">
+                            Share your extra food with communities 🍱
+                        </p>
+
+                    </div>
 
                 </div>
 
-                <div>
+                <div class="glass rounded-2xl px-4 py-3 flex items-center gap-3 soft-shadow smooth-card">
 
-                    <h1 class="text-3xl font-black text-[#504E76]">
-                        Donate Food
-                    </h1>
+                    <div>
 
-                    <p class="text-sm text-[#504E76]/70">
-                        Share your extra food with communities in need
-                    </p>
+                        <h1 class="font-black text-[#504E76] text-base lg:text-lg">
+                            {{ Auth::user()->username }}
+                        </h1>
+
+                        <p class="text-[#504E76]/60 text-xs lg:text-sm">
+                            Supplier
+                        </p>
+
+                    </div>
+
+                    <img
+                        src="{{ Auth::user()->profile_photo ? asset(Auth::user()->profile_photo) : 'https://ui-avatars.com/api/?name=' . urlencode(Auth::user()->username) }}"
+                        class="w-12 h-12 rounded-full border-4 border-white object-cover shadow-lg">
 
                 </div>
 
@@ -222,26 +311,6 @@
                             </button>
 
                         </div>
-
-                    </div>
-
-                    <!-- PICKUP TIME -->
-                    <div>
-
-                        <label class="block text-sm
-                            font-semibold text-[#504E76] mb-2">
-
-                            Pickup Time
-
-                        </label>
-
-                        <input
-                            type="datetime-local"
-                            name="pickup_time"
-
-                            class="w-full p-3 rounded-2xl
-                            bg-white/70 border border-white/30
-                            focus:outline-none text-sm">
 
                     </div>
 

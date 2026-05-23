@@ -13,7 +13,11 @@ use Illuminate\Support\Facades\Auth;
 |--------------------------------------------------------------------------
 */
 
-Route::get('/', [AuthController::class, 'index']);
+Route::get('/', function () {
+    return view('landing');
+});
+
+Route::get('/login', [AuthController::class, 'index']);
 
 Route::post('/login', [AuthController::class, 'login']);
 
@@ -131,19 +135,5 @@ Route::middleware(['role:community'])->group(function () {
     Route::post(
         '/community-settings/password',
         [CommunityController::class, 'updatePassword']
-    );
-});
-
-/*
-|--------------------------------------------------------------------------
-| ADMIN
-|--------------------------------------------------------------------------
-*/
-
-Route::middleware(['role:superadmin'])->group(function () {
-
-    Route::get(
-        '/dashboard-admin',
-        [AdminController::class, 'dashboard']
     );
 });
